@@ -14,10 +14,16 @@ go get github.com/The-Egg-Corp/ThunderGo
 # Usage
 This simple example illustrates how to interact with **ThunderGo**.
 ```go
+import (
+    TSGO "github.com/The-Egg-Corp/ThunderGo"
+)
 
+func PrintModsInCategory(game string) {
+    mods, err := TSGO.Category().AllMods()
+}
 ```
 
-Visit the [wiki] for the full documentation.
+Visit the [wiki]() for the full documentation.
 
 # Contact
 Feel free to join my [discord]() for support or suggestions.
