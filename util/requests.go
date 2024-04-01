@@ -8,7 +8,7 @@ import (
 )
 
 const REQ_TIMEOUT = 10 * time.Second
-const DOMAIN = "thunderstore.io/api/"
+const DOMAIN = "https://thunderstore.io/api/"
 
 func get(url string) ([]byte, error) {
 	client := http.Client{Timeout: REQ_TIMEOUT}

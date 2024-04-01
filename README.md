@@ -1,8 +1,7 @@
 # ThunderGo
-Go client for the [Thunderstore](https://thunderstore.io) API.\
-Built to be performant with an intuitive syntax.
+> You can also call this **TSGO** ;)
 
-You can also call this **TSGO** if you'd like ;)
+Go client for the [Thunderstore](https://thunderstore.io) API.\
 
 # Installation
 Enter the following line into your project's terminal.
@@ -18,12 +17,19 @@ import (
     TSGO "github.com/The-Egg-Corp/ThunderGo"
 )
 
-func PrintModsInCategory(game string) {
-    mods, err := TSGO.Category().AllMods()
+func main() {
+    mod, err := TSGO.GetPackage("Owen3H", "CSync")
+
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Println(mod.Latest.GetChangelog())
 }
 ```
 
-Visit the [wiki]() for the full documentation.
+Visit the [wiki](https://github.com/The-Egg-Corp/ThunderGo/wiki) for the full documentation.
 
 # Contact
 Feel free to join my [discord]() for support or suggestions.
