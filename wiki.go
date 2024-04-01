@@ -1,4 +1,4 @@
-package experimental
+package thundergo
 
 type Wiki struct {
 	Id          string          `json:"id"`

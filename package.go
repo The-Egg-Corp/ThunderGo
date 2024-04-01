@@ -1,4 +1,4 @@
-package experimental
+package thundergo
 
 import (
 	"fmt"
@@ -6,6 +6,9 @@ import (
 )
 
 type Package struct {
+}
+
+type PackageExperimental struct {
 	Namespace      string         `json:"namespace"`
 	Name           string         `json:"name"`
 	FullName       string         `json:"full_name"`

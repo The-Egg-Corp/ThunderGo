@@ -3,12 +3,12 @@ package tests
 import (
 	"fmt"
 	"testing"
-	TSGO "thundergo/experimental"
+	TSGO "thundergo"
 	"thundergo/util"
 )
 
 func TestCommunity(t *testing.T) {
-	comm, found := TSGO.GetCommunity("riskofrain2")
+	comm, found := TSGO.Experimental.GetCommunity("riskofrain2")
 
 	if found == false {
 		t.Error("Could not find the specified community!")

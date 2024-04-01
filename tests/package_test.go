@@ -3,15 +3,15 @@ package tests
 import (
 	"fmt"
 	"testing"
-	TSGO "thundergo/experimental"
+	TSGO "thundergo"
 	"thundergo/util"
 )
 
 func TestPackage(t *testing.T) {
 	var err error
-	var pkg *TSGO.Package
+	var pkg *TSGO.PackageExperimental
 
-	pkg, err = TSGO.GetPackage("Owen3H", "CSync")
+	pkg, err = TSGO.Experimental.GetPackage("Owen3H", "CSync")
 
 	if err != nil {
 		t.Fatalf(err.Error())

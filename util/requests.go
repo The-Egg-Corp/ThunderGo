@@ -8,7 +8,6 @@ import (
 )
 
 const REQ_TIMEOUT = 10 * time.Second
-const DOMAIN = "https://thunderstore.io/"
 
 func get(url string) ([]byte, error) {
 	client := http.Client{Timeout: REQ_TIMEOUT}
@@ -33,6 +32,6 @@ func asJSON[T interface{}](res []byte, err error) (T, error) {
 	return data, nil
 }
 
-func JsonRequest[T interface{}](endpoint string) (T, error) {
-	return asJSON[T](get(DOMAIN + endpoint))
+func JsonRequest[T interface{}](url string) (T, error) {
+	return asJSON[T](get(url))
 }
