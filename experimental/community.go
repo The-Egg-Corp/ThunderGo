@@ -28,7 +28,7 @@ type CommunityCategories struct {
 }
 
 func (community Community) Categories() ([]PackageCategory, error) {
-	endpoint := fmt.Sprint("experimental/community/", community.Identifier, "/category")
+	endpoint := fmt.Sprint("api/experimental/community/", community.Identifier, "/category")
 	res, err := util.JsonRequest[CommunityCategories](endpoint)
 
 	return res.Results, err

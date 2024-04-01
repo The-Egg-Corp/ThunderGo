@@ -6,7 +6,7 @@ Go client for the [Thunderstore](https://thunderstore.io) API.
 # Installation
 Enter the following line into your project's terminal.
 
-```bash
+```console
 go get github.com/The-Egg-Corp/ThunderGo
 ```
 

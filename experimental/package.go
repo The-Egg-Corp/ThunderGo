@@ -36,7 +36,7 @@ type PackageVersion struct {
 }
 
 func (pkg PackageVersion) GetChangelog() (MarkdownResponse, error) {
-	endpoint := fmt.Sprint("experimental/package/", pkg.Namespace, "/", pkg.Name, "/", pkg.VersionNumber, "/changelog")
+	endpoint := fmt.Sprint("api/experimental/package/", pkg.Namespace, "/", pkg.Name, "/", pkg.VersionNumber, "/changelog")
 	return util.JsonRequest[MarkdownResponse](endpoint)
 }
 

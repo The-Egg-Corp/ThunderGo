@@ -8,7 +8,7 @@ import (
 )
 
 func GetCommunities() (CommunityList, error) {
-	return util.JsonRequest[CommunityList]("experimental/community")
+	return util.JsonRequest[CommunityList]("api/experimental/community")
 }
 
 func GetCommunity(nameOrId string) (*Community, bool) {
@@ -24,6 +24,6 @@ func GetCommunity(nameOrId string) (*Community, bool) {
 }
 
 func GetPackage(author string, name string) (*Package, error) {
-	endpoint := fmt.Sprint("experimental/package/", author, "/", name)
+	endpoint := fmt.Sprint("api/experimental/package/", author, "/", name)
 	return util.JsonRequest[*Package](endpoint)
 }
