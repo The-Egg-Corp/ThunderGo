@@ -17,7 +17,8 @@ func TestPkg(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	fmt.Println(util.Prettify(pkg.Latest))
+	cl, _ := pkg.Latest.GetChangelog()
+	fmt.Println(util.Prettify(cl))
 }
 
 func TestCommunity(t *testing.T) {

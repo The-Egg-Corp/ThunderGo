@@ -1,7 +1,7 @@
 # ThunderGo
-> You can also call this **TSGO** ;)
+> You can also call it **TSGO** for short ;)
 
-Go client for the [Thunderstore](https://thunderstore.io) API.\
+Go client for the [Thunderstore](https://thunderstore.io) API.
 
 # Installation
 Enter the following line into your project's terminal.
@@ -25,11 +25,12 @@ func main() {
         return
     }
 
-    fmt.Println(mod.Latest.GetChangelog())
+	cl, _ := pkg.Latest.GetChangelog()
+	fmt.Println(cl)
 }
 ```
 
 Visit the [wiki](https://github.com/The-Egg-Corp/ThunderGo/wiki) for the full documentation.
 
 # Contact
-Feel free to join my [discord]() for support or suggestions.
+Feel free to join my [discord](https://discord.gg/BwfzZpytjf) for support or suggestions.
