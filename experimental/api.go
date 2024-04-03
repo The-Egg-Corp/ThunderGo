@@ -3,9 +3,12 @@ package experimental
 import (
 	"fmt"
 	"thundergo/util"
+	"time"
 
 	"github.com/samber/lo"
 )
+
+type Time time.Time
 
 func GetCommunities() (CommunityList, error) {
 	return util.JsonRequest[CommunityList]("api/experimental/community")

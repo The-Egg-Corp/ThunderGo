@@ -17,6 +17,6 @@ func TestPackage(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	cl, _ := pkg.Latest.GetChangelog()
+	cl, _ := pkg.Latest.GetReadme()
 	fmt.Println(util.Prettify(cl))
 }

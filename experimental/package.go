@@ -2,6 +2,7 @@ package experimental
 
 import (
 	"fmt"
+	"thundergo/common"
 	"thundergo/util"
 )
 
@@ -11,8 +12,8 @@ type Package struct {
 	FullName       string         `json:"full_name"`
 	Owner          string         `json:"owner"`
 	PackageURL     string         `json:"package_url"`
-	DateCreated    string         `json:"date_created"`
-	DateUpdated    string         `json:"date_updated"`
+	DateCreated    Time           `json:"date_created"`
+	DateUpdated    Time           `json:"date_updated"`
 	Rating         string         `json:"rating_score"`
 	Pinned         bool           `json:"is_pinned"`
 	Deprecated     bool           `json:"is_deprecated"`
@@ -28,16 +29,26 @@ type PackageVersion struct {
 	Description   string `json:"description"`
 	Icon          string `json:"icon"`
 	Dependencies  string `json:"dependencies"`
-	DateCreated   string `json:"date_created"`
+	DateCreated   Time   `json:"date_created"`
 	Downloads     int32  `json:"total_downloads"`
 	DownloadURL   string `json:"download_url"`
 	WebsiteURL    string `json:"website_url"`
 	Active        bool   `json:"is_active"`
 }
 
-func (pkg PackageVersion) GetChangelog() (MarkdownResponse, error) {
-	endpoint := fmt.Sprint("api/experimental/package/", pkg.Namespace, "/", pkg.Name, "/", pkg.VersionNumber, "/changelog")
-	return util.JsonRequest[MarkdownResponse](endpoint)
+func (pkg PackageVersion) GetChangelog() (string, error) {
+	res, err := pkg.getMarkdown("/changelog")
+	return res.Markdown, err
+}
+
+func (pkg PackageVersion) GetReadme() (string, error) {
+	res, err := pkg.getMarkdown("/readme")
+	return res.Markdown, err
+}
+
+func (pkg PackageVersion) getMarkdown(file string) (common.MarkdownResponse, error) {
+	endpoint := fmt.Sprint("api/experimental/package/", pkg.Namespace, "/", pkg.Name, "/", pkg.VersionNumber, file)
+	return util.JsonRequest[common.MarkdownResponse](endpoint)
 }
 
 // region ReviewStatus Enum
@@ -70,12 +81,8 @@ type PackageListing struct {
 	ReviewStatus   ReviewStatus `json:"review_status"`
 }
 
-type PackageCategory struct {
-	Name string `json:"name"`
-	Slug string `json:"slug"`
-}
-
-// Response received for markdown files like README etc.
-type MarkdownResponse struct {
-	Markdown string `json:"markdown"`
+type PackageWiki struct {
+	Namespace string `json:"namespace"`
+	Name      string `json:"name"`
+	Wiki      Wiki   `json:"wiki"`
 }
