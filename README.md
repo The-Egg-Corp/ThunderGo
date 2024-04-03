@@ -1,3 +1,6 @@
+> [!WARNING]
+> This project is a **WIP** and until there is an initial release, using it is not advised.
+
 # ThunderGo
 > You can also call it **TSGO** for short ;)
 
