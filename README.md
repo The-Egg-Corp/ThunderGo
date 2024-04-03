@@ -18,7 +18,7 @@ go get github.com/The-Egg-Corp/ThunderGo
 This simple example illustrates how to interact with **ThunderGo**.
 ```go
 import (
-    TSGO "github.com/The-Egg-Corp/ThunderGo"
+    TSGO "github.com/The-Egg-Corp/ThunderGo/experimental"
 )
 
 func main() {
