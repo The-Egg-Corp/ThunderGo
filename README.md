@@ -3,10 +3,10 @@
 > There is no license yet, so all rights are reserved.
 
 # ThunderGo
-> You can also call it **TSGO** for short ;)
-
 Go client for the [Thunderstore](https://thunderstore.io) API.
 
+> You can call it **TSGO** for short ;)
+> 
 # Installation
 Enter the following line into your project's terminal.
 
@@ -29,7 +29,7 @@ func main() {
         return
     }
 
-	cl, _ := pkg.Latest.GetChangelog()
+	cl, _ := mod.Latest.GetChangelog()
 	fmt.Println(cl)
 }
 ```
