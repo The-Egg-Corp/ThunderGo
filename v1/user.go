@@ -1,5 +1,14 @@
 package v1
 
+type UserMedia struct {
+	UUID        string   `json:"uuid"`
+	FileName    string   `json:"filename"`
+	Size        uint64   `json:"size"`
+	DateCreated Time     `json:"datetime_created"`
+	Expiry      *string  `json:"expiry"`
+	Status      []string `json:"status"`
+}
+
 type UserTeam struct {
 	Name        string `json:"name"`
 	Role        string `json:"role"`

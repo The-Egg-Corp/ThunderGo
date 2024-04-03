@@ -48,7 +48,7 @@ func (pkg PackageVersion) GetReadme() (string, error) {
 
 func (pkg PackageVersion) getMarkdown(file string) (common.MarkdownResponse, error) {
 	endpoint := fmt.Sprint("api/experimental/package/", pkg.Namespace, "/", pkg.Name, "/", pkg.VersionNumber, file)
-	return util.JsonRequest[common.MarkdownResponse](endpoint)
+	return util.JsonGetRequest[common.MarkdownResponse](endpoint)
 }
 
 // region ReviewStatus Enum

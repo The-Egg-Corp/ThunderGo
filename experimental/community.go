@@ -36,7 +36,7 @@ func (community Community) AllPackages() ([]Package, error) {
 
 func (community Community) Categories() ([]Category, error) {
 	endpoint := fmt.Sprint("api/experimental/community/", community.Identifier, "/category")
-	res, err := util.JsonRequest[CommunityCategories](endpoint)
+	res, err := util.JsonGetRequest[CommunityCategories](endpoint)
 
 	return res.Results, err
 }

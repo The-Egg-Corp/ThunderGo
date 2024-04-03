@@ -1,6 +1,7 @@
 package experimental
 
 import (
+	"encoding/base64"
 	"fmt"
 	"thundergo/util"
 	"time"
@@ -10,8 +11,14 @@ import (
 
 type Time time.Time
 
+type Base64String string
+
+func (b Base64String) String() string {
+	return base64.StdEncoding.EncodeToString([]byte(b))
+}
+
 func GetCommunities() (CommunityList, error) {
-	return util.JsonRequest[CommunityList]("api/experimental/community")
+	return util.JsonGetRequest[CommunityList]("api/experimental/community")
 }
 
 func GetCommunity(nameOrId string) (*Community, bool) {
@@ -28,5 +35,5 @@ func GetCommunity(nameOrId string) (*Community, bool) {
 
 func GetPackage(author string, name string) (*Package, error) {
 	endpoint := fmt.Sprint("api/experimental/package/", author, "/", name)
-	return util.JsonRequest[*Package](endpoint)
+	return util.JsonGetRequest[*Package](endpoint)
 }
