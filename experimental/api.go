@@ -4,12 +4,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	"thundergo/util"
-	"time"
 
 	"github.com/samber/lo"
 )
-
-type Time time.Time
 
 type Base64String string
 

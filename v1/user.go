@@ -1,12 +1,14 @@
 package v1
 
+import "thundergo/util"
+
 type UserMedia struct {
-	UUID        string   `json:"uuid"`
-	FileName    string   `json:"filename"`
-	Size        uint64   `json:"size"`
-	DateCreated DateTime `json:"datetime_created"`
-	Expiry      *string  `json:"expiry"`
-	Status      []string `json:"status"`
+	UUID        string        `json:"uuid"`
+	FileName    string        `json:"filename"`
+	Size        uint64        `json:"size"`
+	DateCreated util.DateTime `json:"datetime_created"`
+	Expiry      *string       `json:"expiry"`
+	Status      []string      `json:"status"`
 }
 
 type UserTeam struct {

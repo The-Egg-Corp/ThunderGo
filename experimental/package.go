@@ -12,8 +12,8 @@ type Package struct {
 	FullName       string         `json:"full_name"`
 	Owner          string         `json:"owner"`
 	PackageURL     string         `json:"package_url"`
-	DateCreated    Time           `json:"date_created"`
-	DateUpdated    Time           `json:"date_updated"`
+	DateCreated    util.DateTime  `json:"date_created"`
+	DateUpdated    util.DateTime  `json:"date_updated"`
 	Rating         string         `json:"rating_score"`
 	Pinned         bool           `json:"is_pinned"`
 	Deprecated     bool           `json:"is_deprecated"`
@@ -22,18 +22,18 @@ type Package struct {
 }
 
 type PackageVersion struct {
-	Namespace     string `json:"namespace"`
-	Name          string `json:"name"`
-	FullName      string `json:"full_name"`
-	VersionNumber string `json:"version_number"`
-	Description   string `json:"description"`
-	Icon          string `json:"icon"`
-	Dependencies  string `json:"dependencies"`
-	DateCreated   Time   `json:"date_created"`
-	Downloads     int32  `json:"total_downloads"`
-	DownloadURL   string `json:"download_url"`
-	WebsiteURL    string `json:"website_url"`
-	Active        bool   `json:"is_active"`
+	Namespace     string        `json:"namespace"`
+	Name          string        `json:"name"`
+	FullName      string        `json:"full_name"`
+	DateCreated   util.DateTime `json:"date_created"`
+	VersionNumber string        `json:"version_number"`
+	Description   string        `json:"description"`
+	Icon          string        `json:"icon"`
+	Dependencies  []string      `json:"dependencies"`
+	Downloads     int32         `json:"total_downloads"`
+	DownloadURL   string        `json:"download_url"`
+	WebsiteURL    string        `json:"website_url"`
+	Active        bool          `json:"is_active"`
 }
 
 func (pkg PackageVersion) GetChangelog() (string, error) {

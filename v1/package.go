@@ -1,13 +1,15 @@
 package v1
 
+import "thundergo/util"
+
 type PackageListing struct {
 	Name           string           `json:"name"`
 	FullName       string           `json:"full_name"`
 	Owner          string           `json:"owner"`
 	PackageURL     string           `json:"package_url"`
 	DonationLink   string           `json:"donation_link"`
-	DateCreated    DateTime         `json:"date_created"`
-	DateUpdated    DateTime         `json:"date_updated"`
+	DateCreated    util.DateTime    `json:"date_created"`
+	DateUpdated    util.DateTime    `json:"date_updated"`
 	UUID           string           `json:"uuid4"`
 	Rating         uint16           `json:"rating_score"`
 	Pinned         bool             `json:"is_pinned"`
@@ -39,19 +41,19 @@ type PackageDependency struct {
 // }
 
 type PackageVersion struct {
-	DateCreated   DateTime `json:"date_created"`
-	Dependencies  []string `json:"dependencies"`
-	Description   string   `json:"description"`
-	DownloadURL   string   `json:"download_url"`
-	Downloads     uint32   `json:"downloads"`
-	FileSize      uint64   `json:"file_size"`
-	Name          string   `json:"name"`
-	FullName      string   `json:"full_name"`
-	Icon          string   `json:"icon"`
-	Active        bool     `json:"is_active"`
-	VersionNumber string   `json:"version_number"`
-	UUID          string   `json:"uuid4"`
-	WebsiteURL    string   `json:"website_url"`
+	DateCreated   util.DateTime `json:"date_created"`
+	Dependencies  []string      `json:"dependencies"`
+	Description   string        `json:"description"`
+	DownloadURL   string        `json:"download_url"`
+	Downloads     uint32        `json:"downloads"`
+	FileSize      uint64        `json:"file_size"`
+	Name          string        `json:"name"`
+	FullName      string        `json:"full_name"`
+	Icon          string        `json:"icon"`
+	Active        bool          `json:"is_active"`
+	VersionNumber string        `json:"version_number"`
+	UUID          string        `json:"uuid4"`
+	WebsiteURL    string        `json:"website_url"`
 }
 
 type PackageMetrics struct {
