@@ -1,20 +1,20 @@
 package v1
 
 type PackageListing struct {
-	Name           string `json:"name"`
-	FullName       string `json:"full_name"`
-	Owner          string `json:"owner"`
-	PackageURL     string `json:"package_url"`
-	DonationLink   string `json:"donation_link"`
-	DateCreated    Time   `json:"date_created"`
-	DateUpdated    Time   `json:"date_updated"`
-	UUID           string `json:"uuid4"`
-	Rating         string `json:"rating_score"`
-	Pinned         string `json:"is_pinned"`
-	Deprecated     string `json:"is_deprecated"`
-	HasNsfwContent bool   `json:"has_nsfw_content"`
-	Categories     string `json:"categories"`
-	Versions       string `json:"versions"`
+	Name           string           `json:"name"`
+	FullName       string           `json:"full_name"`
+	Owner          string           `json:"owner"`
+	PackageURL     string           `json:"package_url"`
+	DonationLink   string           `json:"donation_link"`
+	DateCreated    DateTime         `json:"date_created"`
+	DateUpdated    DateTime         `json:"date_updated"`
+	UUID           string           `json:"uuid4"`
+	Rating         uint16           `json:"rating_score"`
+	Pinned         bool             `json:"is_pinned"`
+	Deprecated     bool             `json:"is_deprecated"`
+	HasNsfwContent bool             `json:"has_nsfw_content"`
+	Categories     []string         `json:"categories"`
+	Versions       []PackageVersion `json:"versions"`
 }
 
 type PackageCategory struct {
@@ -30,12 +30,28 @@ type PackageDependency struct {
 	VersionNumber string  `json:"version_number"`
 }
 
+// type PackageVersion struct {
+// 	DateCreated   Time   `json:"date_created"`
+// 	Downloads     int32  `json:"download_count"`
+// 	DownloadURL   string `json:"download_url"`
+// 	InstallURL    string `json:"install_url"`
+// 	VersionNumber string `json:"version_number"`
+// }
+
 type PackageVersion struct {
-	DateCreated   Time   `json:"date_created"`
-	Downloads     int32  `json:"download_count"`
-	DownloadURL   string `json:"download_url"`
-	InstallURL    string `json:"install_url"`
-	VersionNumber string `json:"version_number"`
+	DateCreated   DateTime `json:"date_created"`
+	Dependencies  []string `json:"dependencies"`
+	Description   string   `json:"description"`
+	DownloadURL   string   `json:"download_url"`
+	Downloads     uint32   `json:"downloads"`
+	FileSize      uint64   `json:"file_size"`
+	Name          string   `json:"name"`
+	FullName      string   `json:"full_name"`
+	Icon          string   `json:"icon"`
+	Active        bool     `json:"is_active"`
+	VersionNumber string   `json:"version_number"`
+	UUID          string   `json:"uuid4"`
+	WebsiteURL    string   `json:"website_url"`
 }
 
 type PackageMetrics struct {
