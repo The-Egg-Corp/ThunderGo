@@ -28,12 +28,12 @@ func TestAllPackages(t *testing.T) {
 	var err error
 	var pkgs []TSGOV1.PackageListing
 
-	pkgs, err = TSGOV1.GetAllPackages()
+	pkgs, err = TSGOV1.GetCommunityPackages("lethal-company")
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	pkg, _ := lo.Find(pkgs, func(item TSGOV1.PackageListing) bool {
+	pkg := lo.Filter(pkgs, func(item TSGOV1.PackageListing, index int) bool {
 		return item.Name == "CSync"
 	})
 

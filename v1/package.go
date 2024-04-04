@@ -19,7 +19,12 @@ type PackageListing struct {
 	Versions       []PackageVersion `json:"versions"`
 }
 
-type PackageCategory struct {
+func (metrics PackageListing) Metrics() (*PackageMetrics, error) {
+	return nil, nil
+}
+
+func (metrics PackageListing) VersionMetrics(version string) (*PackageMetrics, error) {
+	return nil, nil
 }
 
 type PackageDependency struct {
