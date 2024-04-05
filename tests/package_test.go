@@ -6,8 +6,6 @@ import (
 	TSGOExp "thundergo/experimental"
 	"thundergo/util"
 	TSGOV1 "thundergo/v1"
-
-	"github.com/samber/lo"
 )
 
 func TestPackage(t *testing.T) {
@@ -26,16 +24,29 @@ func TestPackage(t *testing.T) {
 
 func TestAllPackages(t *testing.T) {
 	var err error
-	var pkgs []TSGOV1.PackageListing
+	var pkgs TSGOV1.PackageList
 
-	pkgs, err = TSGOV1.GetCommunityPackages("lethal-company")
+	pkgs, err = TSGOV1.GetAllPackages()
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	pkg := lo.Filter(pkgs, func(item TSGOV1.PackageListing, index int) bool {
+	pkg := pkgs.Filter(func(item TSGOV1.Package) bool {
 		return item.Name == "CSync"
 	})
 
 	fmt.Println(util.Prettify(pkg))
+}
+
+func TestCommunityPackages(t *testing.T) {
+	comm := TSGOV1.Community{
+		Identifier: "lethal-company",
+	}
+
+	pkgs, _ := comm.AllPackages()
+	pkgs = pkgs.Filter(func(pkg TSGOV1.Package) bool {
+		return pkg.Owner == "Owen3H"
+	})
+
+	fmt.Println(util.Prettify(pkgs))
 }

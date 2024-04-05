@@ -1,8 +1,11 @@
 package v1
 
-import "thundergo/util"
+import (
+	//"fmt"
+	"thundergo/util"
+)
 
-type PackageListing struct {
+type Package struct {
 	Name           string           `json:"name"`
 	FullName       string           `json:"full_name"`
 	Owner          string           `json:"owner"`
@@ -19,13 +22,20 @@ type PackageListing struct {
 	Versions       []PackageVersion `json:"versions"`
 }
 
-func (metrics PackageListing) Metrics() (*PackageMetrics, error) {
-	return nil, nil
-}
+// type CommunityPackage struct {
+// 	Community string `json:"community"`
+// 	Package
+// }
 
-func (metrics PackageListing) VersionMetrics(version string) (*PackageMetrics, error) {
-	return nil, nil
-}
+// func (pkg CommunityPackage) Metrics() (PackageMetrics, error) {
+// 	endpoint := fmt.Sprint("c/", pkg.Community, "/api/v1/package-metrics/", pkg.Owner, "/", pkg.Name)
+// 	return util.JsonGetRequest[PackageMetrics](endpoint)
+// }
+
+// func (pkg CommunityPackage) VersionMetrics(version string) (PackageVersionMetrics, error) {
+// 	endpoint := fmt.Sprint("c/", pkg.Community, "/api/v1/package-metrics/", pkg.Owner, "/", pkg.Name, "/", pkg.Versions[0])
+// 	return util.JsonGetRequest[PackageVersionMetrics](endpoint)
+// }
 
 type PackageDependency struct {
 	CommunityID   *string `json:"community_identifier"`
