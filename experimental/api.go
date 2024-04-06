@@ -3,7 +3,7 @@ package experimental
 import (
 	"encoding/base64"
 	"fmt"
-	"thundergo/util"
+	"github.com/The-Egg-Corp/ThunderGo/util"
 
 	"github.com/samber/lo"
 )

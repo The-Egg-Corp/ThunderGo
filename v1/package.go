@@ -2,8 +2,8 @@ package v1
 
 import (
 	//"fmt"
+	"github.com/The-Egg-Corp/ThunderGo/util"
 	"strings"
-	"thundergo/util"
 
 	"github.com/samber/lo"
 )

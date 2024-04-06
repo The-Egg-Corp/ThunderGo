@@ -2,10 +2,10 @@ package tests
 
 import (
 	"fmt"
+	TSGO "github.com/The-Egg-Corp/ThunderGo/experimental"
+	"github.com/The-Egg-Corp/ThunderGo/util"
 	"os"
 	"testing"
-	TSGO "thundergo/experimental"
-	"thundergo/util"
 )
 
 // Seems to need Authentication

@@ -2,9 +2,9 @@ package tests
 
 import (
 	"fmt"
+	TSGO "github.com/The-Egg-Corp/ThunderGo/experimental"
+	"github.com/The-Egg-Corp/ThunderGo/util"
 	"testing"
-	TSGO "thundergo/experimental"
-	"thundergo/util"
 )
 
 func TestCommunity(t *testing.T) {

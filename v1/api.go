@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"thundergo/util"
+	"github.com/The-Egg-Corp/ThunderGo/util"
 )
 
 func GetAllPackages() (PackageList, error) {
