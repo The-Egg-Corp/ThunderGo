@@ -1,6 +1,5 @@
 > [!WARNING]
-> This project is a **WIP** and until there is an initial release, using it is not advised.\
-> There is no license yet, so all rights are reserved.
+> This project is a **WIP** and until there is a stable release, using it is not advised.
 
 # ThunderGo
 Go client for the [Thunderstore](https://thunderstore.io) API.
