@@ -28,7 +28,7 @@ func main() {
         return
     }
 
-    changelog, _ := mod.Latest.GetChangelog()
+    changelog, _ := mod.Latest.Changelog()
     fmt.Println(changelog)
 }
 ```
