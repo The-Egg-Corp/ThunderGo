@@ -1,6 +1,6 @@
 package common
 
-import "github.com/The-Egg-Corp/ThunderGo/util"
+import "github.com/the-egg-corp/thundergo/util"
 
 type BasePackageMetadata struct {
 	Name        string        `json:"name"`

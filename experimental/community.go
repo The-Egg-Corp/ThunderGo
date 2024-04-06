@@ -2,8 +2,8 @@ package experimental
 
 import (
 	"fmt"
-	"github.com/The-Egg-Corp/ThunderGo/common"
-	"github.com/The-Egg-Corp/ThunderGo/util"
+	"github.com/the-egg-corp/thundergo/common"
+	"github.com/the-egg-corp/thundergo/util"
 )
 
 type Category = common.PackageCategory

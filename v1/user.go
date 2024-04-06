@@ -1,6 +1,6 @@
 package v1
 
-import "github.com/The-Egg-Corp/ThunderGo/util"
+import "github.com/the-egg-corp/thundergo/util"
 
 type UserMedia struct {
 	UUID        string        `json:"uuid"`

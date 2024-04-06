@@ -10,14 +10,14 @@ You can call it **TSGO** for short ;)
 Enter the following line into your project's terminal.
 
 ```console
-go get github.com/The-Egg-Corp/ThunderGo
+go get github.com/the-egg-corp/thundergo/
 ```
 
 # Usage
 This simple example illustrates how to interact with **ThunderGo**.
 ```go
 import (
-    TSGO "github.com/The-Egg-Corp/ThunderGo/experimental"
+    TSGO "github.com/the-egg-corp/thundergo/experimental"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 }
 ```
 
-Visit the [wiki](https://github.com/The-Egg-Corp/ThunderGo/wiki) for the full documentation.
+Visit the [wiki](https://github.com/the-egg-corp/thundergo/wiki) for the full documentation.
 
 # Contact
 Feel free to join my [discord](https://discord.gg/BwfzZpytjf) for support or suggestions.

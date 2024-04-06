@@ -2,8 +2,8 @@ package tests
 
 import (
 	"fmt"
-	TSGO "github.com/The-Egg-Corp/ThunderGo/experimental"
-	"github.com/The-Egg-Corp/ThunderGo/util"
+	TSGO "github.com/the-egg-corp/thundergo/experimental"
+	"github.com/the-egg-corp/thundergo/util"
 	"testing"
 )
 

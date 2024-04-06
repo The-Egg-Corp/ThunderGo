@@ -2,9 +2,9 @@ package tests
 
 import (
 	"fmt"
-	TSGOExp "github.com/The-Egg-Corp/ThunderGo/experimental"
-	"github.com/The-Egg-Corp/ThunderGo/util"
-	TSGOV1 "github.com/The-Egg-Corp/ThunderGo/v1"
+	TSGOExp "github.com/the-egg-corp/thundergo/experimental"
+	"github.com/the-egg-corp/thundergo/util"
+	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 	"testing"
 )
 

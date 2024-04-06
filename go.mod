@@ -1,7 +1,6 @@
-module github.com/The-Egg-Corp/ThunderGo
+module github.com/the-egg-corp/thundergo
 
-replace github.com/The-Egg-Corp/ThunderGo => ./
-//replace thundergo => ./
+replace github.com/the-egg-corp/thundergo => ./
 
 go 1.22.1
 

@@ -2,7 +2,7 @@ package v1
 
 import (
 	"fmt"
-	"github.com/The-Egg-Corp/ThunderGo/util"
+	"github.com/the-egg-corp/thundergo/util"
 )
 
 type Community struct {

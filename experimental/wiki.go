@@ -1,7 +1,7 @@
 package experimental
 
 import (
-	"github.com/The-Egg-Corp/ThunderGo/util"
+	"github.com/the-egg-corp/thundergo/util"
 )
 
 type WikiList struct {
