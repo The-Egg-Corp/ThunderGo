@@ -1,12 +1,12 @@
-> [!WARNING]
-> This project is a **WIP** and until there is a stable release, using it is not advised.
-
 # ThunderGo
 Go client for the [Thunderstore](https://thunderstore.io) API.
 
 > You can call it **TSGO** for short ;)
 > 
 # Installation
+> [!WARNING]
+> This project is a **WIP** and until there is a stable release, using it is not advised.
+
 Enter the following line into your project's terminal.
 
 ```console
