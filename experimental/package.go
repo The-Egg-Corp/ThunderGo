@@ -36,12 +36,12 @@ type PackageVersion struct {
 	Active        bool          `json:"is_active"`
 }
 
-func (pkg PackageVersion) GetChangelog() (string, error) {
+func (pkg PackageVersion) Changelog() (string, error) {
 	res, err := pkg.getMarkdown("/changelog")
 	return res.Markdown, err
 }
 
-func (pkg PackageVersion) GetReadme() (string, error) {
+func (pkg PackageVersion) Readme() (string, error) {
 	res, err := pkg.getMarkdown("/readme")
 	return res.Markdown, err
 }

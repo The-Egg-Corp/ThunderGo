@@ -8,6 +8,7 @@ import (
 	TSGOV1 "thundergo/v1"
 )
 
+// region Experimental Tests
 func TestPackage(t *testing.T) {
 	var err error
 	var pkg *TSGOExp.Package
@@ -18,10 +19,13 @@ func TestPackage(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	cl, _ := pkg.Latest.GetReadme()
+	cl, _ := pkg.Latest.Readme()
 	fmt.Println(util.Prettify(cl))
 }
 
+//endregion
+
+// region V1 Tests
 func TestAllPackages(t *testing.T) {
 	var err error
 	var pkgs TSGOV1.PackageList
@@ -31,10 +35,7 @@ func TestAllPackages(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	pkg := pkgs.Filter(func(item TSGOV1.Package) bool {
-		return item.Name == "CSync"
-	})
-
+	pkg := pkgs.Get("Owen3H", "CSync")
 	fmt.Println(util.Prettify(pkg))
 }
 
@@ -50,3 +51,5 @@ func TestCommunityPackages(t *testing.T) {
 
 	fmt.Println(util.Prettify(pkgs))
 }
+
+//endregion

@@ -2,8 +2,40 @@ package v1
 
 import (
 	//"fmt"
+	"strings"
 	"thundergo/util"
+
+	"github.com/samber/lo"
 )
+
+var PackageCache PackageList
+
+type PackageList []Package
+
+func (list PackageList) Size() int { return len(list) }
+func (list PackageList) Filter(predicate func(pkg Package) bool) PackageList {
+	arr := make(PackageList, 0, len(list))
+
+	for _, v := range list {
+		if predicate(v) {
+			arr = append(arr, v)
+		}
+	}
+
+	return arr
+}
+
+func (list PackageList) Get(author string, name string) *Package {
+	pkg, found := lo.Find(list, func(p Package) bool {
+		return strings.EqualFold(p.Name, name) && strings.EqualFold(p.Owner, author)
+	})
+
+	if !found {
+		return nil
+	}
+
+	return &pkg
+}
 
 type Package struct {
 	Name           string           `json:"name"`
@@ -47,14 +79,6 @@ type PackageDependency struct {
 	VersionNumber string  `json:"version_number"`
 }
 
-// type PackageVersion struct {
-// 	DateCreated   Time   `json:"date_created"`
-// 	Downloads     int32  `json:"download_count"`
-// 	DownloadURL   string `json:"download_url"`
-// 	InstallURL    string `json:"install_url"`
-// 	VersionNumber string `json:"version_number"`
-// }
-
 type PackageVersion struct {
 	DateCreated   util.DateTime `json:"date_created"`
 	Dependencies  []string      `json:"dependencies"`
@@ -70,6 +94,14 @@ type PackageVersion struct {
 	UUID          string        `json:"uuid4"`
 	WebsiteURL    string        `json:"website_url"`
 }
+
+// type PackageVersion struct {
+// 	DateCreated   Time   `json:"date_created"`
+// 	Downloads     int32  `json:"download_count"`
+// 	DownloadURL   string `json:"download_url"`
+// 	InstallURL    string `json:"install_url"`
+// 	VersionNumber string `json:"version_number"`
+// }
 
 type PackageMetrics struct {
 	Downloads     uint32 `json:"downloads"`
