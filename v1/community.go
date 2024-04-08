@@ -9,6 +9,7 @@ type Community struct {
 	Identifier string
 }
 
+// Returns a list of all packages (mods) within this Community.
 func (comm Community) AllPackages(predicate ...func(item Package, index int) bool) (PackageList, error) {
 	endpoint := fmt.Sprint("c/", comm.Identifier, "/api/v1/package")
 	pkgs, err := util.JsonGetRequest[PackageList](endpoint)
