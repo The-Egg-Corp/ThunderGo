@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dustin/go-humanize"
 	"github.com/sanity-io/litter"
 )
 
@@ -12,7 +13,7 @@ type DateTime struct {
 	time.Time
 }
 
-func (t *DateTime) UnmarshalJSON(b []byte) error {
+func (dt *DateTime) UnmarshalJSON(b []byte) error {
 	str := strings.Trim(string(b), `"`)
 	date, err := time.Parse(time.RFC3339, str)
 
@@ -20,8 +21,12 @@ func (t *DateTime) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	t.Time = date
+	dt.Time = date
 	return nil
+}
+
+func (dt DateTime) Humanize() string {
+	return humanize.Time(dt.Time)
 }
 
 // Prints the interface to STDOUT in a readable way.

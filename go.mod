@@ -9,4 +9,7 @@ require (
 	github.com/sanity-io/litter v1.5.5
 )
 
-require golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
+require (
+	github.com/dustin/go-humanize v1.0.1 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
+)

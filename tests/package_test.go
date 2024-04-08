@@ -123,4 +123,24 @@ func TestMetrics(t *testing.T) {
 	util.PrettyPrint(metrics)
 }
 
+func TestPackageDates(t *testing.T) {
+	pkgs, err := TSGOV1.GetAllPackages()
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	pkg := pkgs.Get("Owen3H", "CSync")
+
+	if pkg.DateCreated.IsZero() {
+		t.Error("DateCreated should be valid and not its zero value.")
+	}
+
+	if pkg.DateUpdated.IsZero() {
+		t.Error("DateUpdated should be valid and not its zero value.")
+	}
+
+	util.PrettyPrint("Created " + pkg.DateCreated.Humanize())
+	util.PrettyPrint("Updated " + pkg.DateUpdated.Humanize())
+}
+
 //endregion
