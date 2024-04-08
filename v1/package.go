@@ -1,8 +1,6 @@
 package v1
 
 import (
-	//"fmt"
-	"github.com/the-egg-corp/thundergo/common"
 	"github.com/the-egg-corp/thundergo/util"
 	"strings"
 
@@ -55,7 +53,7 @@ func (list PackageList) GetByUUID(uuid string) *Package {
 //
 // A full name would look like so:
 //
-//	"Owen3H-CSync-2.2.4"
+//	"Owen3H-CSync"
 func (list PackageList) GetExact(fullName string) *Package {
 	return list.tryFind(func(p Package) bool {
 		return strings.EqualFold(p.FullName, fullName)
@@ -63,11 +61,13 @@ func (list PackageList) GetExact(fullName string) *Package {
 }
 
 type Package struct {
-	common.BasePackageMetadata
+	Name           string           `json:"name"`
+	FullName       string           `json:"full_name"`
 	Owner          string           `json:"owner"`
 	UUID           string           `json:"uuid4"`
 	PackageURL     string           `json:"package_url"`
 	DonationLink   string           `json:"donation_link"`
+	DateCreated    util.DateTime    `json:"date_created"`
 	DateUpdated    util.DateTime    `json:"date_updated"`
 	Rating         uint16           `json:"rating_score"`
 	Pinned         bool             `json:"is_pinned"`
@@ -116,17 +116,19 @@ func (pkg Package) GetVersion(verNumber string) *PackageVersion {
 // }
 
 type PackageVersion struct {
-	common.BasePackageMetadata
-	UUID          string   `json:"uuid4"`
-	Dependencies  []string `json:"dependencies"`
-	Description   string   `json:"description"`
-	DownloadURL   string   `json:"download_url"`
-	Downloads     uint32   `json:"downloads"`
-	FileSize      uint64   `json:"file_size"`
-	Icon          string   `json:"icon"`
-	Active        bool     `json:"is_active"`
-	VersionNumber string   `json:"version_number"`
-	WebsiteURL    string   `json:"website_url"`
+	Name          string        `json:"name"`
+	FullName      string        `json:"full_name"`
+	UUID          string        `json:"uuid4"`
+	Dependencies  []string      `json:"dependencies"`
+	Description   string        `json:"description"`
+	DownloadURL   string        `json:"download_url"`
+	Downloads     uint32        `json:"downloads"`
+	DateCreated   util.DateTime `json:"date_created"`
+	FileSize      uint64        `json:"file_size"`
+	Icon          string        `json:"icon"`
+	Active        bool          `json:"is_active"`
+	VersionNumber string        `json:"version_number"`
+	WebsiteURL    string        `json:"website_url"`
 }
 
 // type PackageVersion struct {

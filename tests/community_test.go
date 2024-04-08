@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCommunity(t *testing.T) {
+func TestCommunityExp(t *testing.T) {
 	comm, found := TSGO.GetCommunity("lethal-company")
 
 	if found == false {
@@ -17,7 +17,7 @@ func TestCommunity(t *testing.T) {
 	util.PrettyPrint(categories)
 }
 
-func TestCommunities(t *testing.T) {
+func TestCommunitiesExp(t *testing.T) {
 	comms, err := TSGO.GetCommunities()
 
 	if err != nil {
