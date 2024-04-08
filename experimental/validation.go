@@ -8,7 +8,7 @@ import (
 )
 
 type ValidatorResponse struct {
-	Success bool `json:"success" must:"true"`
+	Success bool `json:"success"`
 }
 
 type IconValidatorParams struct {
