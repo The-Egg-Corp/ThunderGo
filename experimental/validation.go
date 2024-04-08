@@ -23,15 +23,7 @@ func ValidateManifest() (ValidatorResponse, error) {
 	return ValidatorResponse{}, nil
 }
 
-// func ValidateIcon(data Base64String) (ValidatorResponse, error) {
-// 	body := IconValidatorParams{
-// 		IconData: data.String(),
-// 	}
-
-// 	endpoint := "api/experimental/submission/validate/icon"
-// 	return util.JsonPostRequest[ValidatorResponse](endpoint, body)
-// }
-
+// Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
 func ValidateIcon(data []byte) (bool, error) {
 	// Decode the image
 	img, _, err := image.Decode(bytes.NewReader(data))

@@ -3,9 +3,11 @@ package tests
 import (
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
+	//TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 	"testing"
 )
 
+// region Experimental Tests
 func TestCommunityExp(t *testing.T) {
 	comm, found := TSGO.GetCommunity("lethal-company")
 
@@ -26,3 +28,5 @@ func TestCommunitiesExp(t *testing.T) {
 
 	util.PrettyPrint(comms.Results)
 }
+
+//endregion

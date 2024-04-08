@@ -11,12 +11,14 @@ type UserMedia struct {
 	Status      []string      `json:"status"`
 }
 
+// Represents a user within a Thunderstore team.
 type UserTeam struct {
 	Name        string `json:"name"`
 	Role        string `json:"role"`
 	MemberCount uint8  `json:"member_count"`
 }
 
+// Represents the profile of a Thunderstore user.
 type UserProfile struct {
 	Username      string                 `json:"username"`
 	Capabilities  []*string              `json:"capabilities"`

@@ -6,6 +6,8 @@ import (
 	"github.com/the-egg-corp/thundergo/util"
 )
 
+//var commCache CommunityList
+
 type Category = common.PackageCategory
 
 type CommunityList struct {

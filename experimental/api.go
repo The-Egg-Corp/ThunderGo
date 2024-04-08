@@ -3,6 +3,8 @@ package experimental
 import (
 	"encoding/base64"
 	"fmt"
+	"strings"
+
 	"github.com/the-egg-corp/thundergo/util"
 
 	"github.com/samber/lo"
@@ -18,6 +20,7 @@ func GetCommunities() (CommunityList, error) {
 	return util.JsonGetRequest[CommunityList]("api/experimental/community")
 }
 
+// Get a specific [Community] by it's identifier or short name.
 func GetCommunity(nameOrId string) (*Community, bool) {
 	communities, err := GetCommunities()
 
@@ -26,7 +29,7 @@ func GetCommunity(nameOrId string) (*Community, bool) {
 	}
 
 	return lo.Find(communities.Results, func(comm *Community) bool {
-		return comm.Name == nameOrId || comm.Identifier == nameOrId
+		return strings.EqualFold(comm.Name, nameOrId) || strings.EqualFold(comm.Identifier, nameOrId)
 	})
 }
 

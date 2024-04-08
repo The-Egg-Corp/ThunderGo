@@ -1,8 +1,10 @@
 package v1
 
 import (
-	"github.com/the-egg-corp/thundergo/util"
+	"fmt"
 	"strings"
+
+	"github.com/the-egg-corp/thundergo/util"
 
 	"github.com/samber/lo"
 )
@@ -30,21 +32,21 @@ func (list PackageList) Filter(predicate func(pkg Package) bool) PackageList {
 	return arr
 }
 
-func (list PackageList) tryFind(pred func(pkg Package) bool) *Package {
-	pkg, found := lo.Find(list, pred)
+func tryFind[T any](arr []T, pred func(pkg T) bool) *T {
+	pkg, found := lo.Find(arr, pred)
 	return lo.Ternary(found, &pkg, nil)
 }
 
 // Grab a single package from the list given the package owner's name and the package's short name.
 func (list PackageList) Get(author string, name string) *Package {
-	return list.tryFind(func(p Package) bool {
+	return tryFind(list, func(p Package) bool {
 		return strings.EqualFold(p.Name, name) && strings.EqualFold(p.Owner, author)
 	})
 }
 
 // Grab a single package from the list given the package owner's name and the package's short name.
 func (list PackageList) GetByUUID(uuid string) *Package {
-	return list.tryFind(func(p Package) bool {
+	return tryFind(list, func(p Package) bool {
 		return strings.EqualFold(p.UUID, uuid)
 	})
 }
@@ -55,11 +57,14 @@ func (list PackageList) GetByUUID(uuid string) *Package {
 //
 //	"Owen3H-CSync"
 func (list PackageList) GetExact(fullName string) *Package {
-	return list.tryFind(func(p Package) bool {
+	return tryFind(list, func(p Package) bool {
 		return strings.EqualFold(p.FullName, fullName)
 	})
 }
 
+// Represents a package/mod on Thunderstore that is global and not specific to any community.
+//
+// To easily find a version from Versions, use [Package.GetVersion].
 type Package struct {
 	Name           string           `json:"name"`
 	FullName       string           `json:"full_name"`
@@ -89,32 +94,20 @@ type Package struct {
 //
 //	"v3.1", "v2", "1.0"
 func (pkg Package) GetVersion(verNumber string) *PackageVersion {
-	ver, found := lo.Find(pkg.Versions, func(v PackageVersion) bool {
+	return tryFind(pkg.Versions, func(v PackageVersion) bool {
 		return strings.EqualFold(v.VersionNumber, strings.Replace(verNumber, "v", "", 1))
 	})
-
-	if !found {
-		return nil
-	}
-
-	return &ver
 }
 
-// type CommunityPackage struct {
-// 	Community string `json:"community"`
-// 	Package
-// }
+// Gets this package's statistics such as downloads and likes.
+func (pkg Package) Metrics(version ...string) (PackageMetrics, error) {
+	endpoint := fmt.Sprint("api/v1/package-metrics/", pkg.Owner, "/", pkg.Name)
+	return util.JsonGetRequest[PackageMetrics](endpoint)
+}
 
-// func (pkg CommunityPackage) Metrics() (PackageMetrics, error) {
-// 	endpoint := fmt.Sprint("c/", pkg.Community, "/api/v1/package-metrics/", pkg.Owner, "/", pkg.Name)
-// 	return util.JsonGetRequest[PackageMetrics](endpoint)
-// }
-
-// func (pkg CommunityPackage) VersionMetrics(version string) (PackageVersionMetrics, error) {
-// 	endpoint := fmt.Sprint("c/", pkg.Community, "/api/v1/package-metrics/", pkg.Owner, "/", pkg.Name, "/", pkg.Versions[0])
-// 	return util.JsonGetRequest[PackageVersionMetrics](endpoint)
-// }
-
+// A specific version of a package.
+//
+// Note: This is NOT equivalent to [Package] as its fields differ.
 type PackageVersion struct {
 	Name          string        `json:"name"`
 	FullName      string        `json:"full_name"`

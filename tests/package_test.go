@@ -109,4 +109,18 @@ func TestPackageGetByUUID(t *testing.T) {
 	util.PrettyPrint(pkg)
 }
 
+func TestMetrics(t *testing.T) {
+	pkgs, err := TSGOV1.GetAllPackages()
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	metrics, err := pkgs.Get("Owen3H", "CSync").Metrics()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	util.PrettyPrint(metrics)
+}
+
 //endregion

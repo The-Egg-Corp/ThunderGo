@@ -7,6 +7,7 @@ import (
 	"github.com/sanity-io/litter"
 )
 
+// An alias for [time.Time] that is correctly unmarshalled from JSON.
 type DateTime struct {
 	time.Time
 }
@@ -23,6 +24,7 @@ func (t *DateTime) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+// Prints the interface to STDOUT in a readable way.
 func PrettyPrint(i interface{}) {
 	litter.Config.StripPackageNames = true
 	litter.Dump(i)
