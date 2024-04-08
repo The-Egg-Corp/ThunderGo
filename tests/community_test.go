@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"fmt"
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
 	"testing"
@@ -15,7 +14,7 @@ func TestCommunity(t *testing.T) {
 	}
 
 	categories, _ := comm.Categories()
-	fmt.Println(util.Prettify(categories))
+	util.PrettyPrint(categories)
 }
 
 func TestCommunities(t *testing.T) {
@@ -25,5 +24,5 @@ func TestCommunities(t *testing.T) {
 		t.Error("Could not get list of communities!")
 	}
 
-	fmt.Println(util.Prettify(comms.Results))
+	util.PrettyPrint(comms.Results)
 }

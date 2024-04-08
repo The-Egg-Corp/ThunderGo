@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"fmt"
 	TSGOExp "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
 	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
@@ -20,7 +19,7 @@ func TestPackage(t *testing.T) {
 	}
 
 	cl, _ := pkg.Latest.Readme()
-	fmt.Println(util.Prettify(cl))
+	util.PrettyPrint(cl)
 }
 
 //endregion
@@ -35,8 +34,7 @@ func TestAllPackages(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	pkg := pkgs.Get("Owen3H", "CSync")
-	fmt.Println(util.Prettify(pkg))
+	util.PrettyPrint(pkgs)
 }
 
 func TestCommunityPackages(t *testing.T) {
@@ -49,7 +47,17 @@ func TestCommunityPackages(t *testing.T) {
 		return pkg.Owner == "Owen3H"
 	})
 
-	fmt.Println(util.Prettify(pkgs))
+	util.PrettyPrint(pkgs)
+}
+
+func TestPackageVersion(t *testing.T) {
+	pkgs, err := TSGOV1.GetAllPackages()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	pkg := pkgs.Get("Owen3H", "CSync").GetVersion("2.0.0")
+	util.PrettyPrint(pkg)
 }
 
 //endregion

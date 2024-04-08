@@ -23,7 +23,7 @@ func (t *DateTime) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func Prettify(i interface{}) string {
+func PrettyPrint(i interface{}) {
 	litter.Config.StripPackageNames = true
-	return litter.Sdump(i)
+	litter.Dump(i)
 }

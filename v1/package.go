@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 )
 
-var PackageCache PackageList
+var pkgCache PackageList
 
 // An alias for a [Package] array with helper functions attached.
 type PackageList []Package
@@ -32,17 +32,23 @@ func (list PackageList) Filter(predicate func(pkg Package) bool) PackageList {
 	return arr
 }
 
+func (list PackageList) tryFind(pred func(pkg Package) bool) *Package {
+	pkg, found := lo.Find(list, pred)
+	return lo.Ternary(found, &pkg, nil)
+}
+
 // Grab a single package from the list given the package owner's name and the package's short name.
 func (list PackageList) Get(author string, name string) *Package {
-	pkg, found := lo.Find(list, func(p Package) bool {
+	return list.tryFind(func(p Package) bool {
 		return strings.EqualFold(p.Name, name) && strings.EqualFold(p.Owner, author)
 	})
+}
 
-	if !found {
-		return nil
-	}
-
-	return &pkg
+// Grab a single package from the list given the package owner's name and the package's short name.
+func (list PackageList) GetByUUID(uuid string) *Package {
+	return list.tryFind(func(p Package) bool {
+		return strings.EqualFold(p.UUID, uuid)
+	})
 }
 
 // Grab a single package from the list given the package's full name.
@@ -51,15 +57,9 @@ func (list PackageList) Get(author string, name string) *Package {
 //
 //	"Owen3H-CSync-2.2.4"
 func (list PackageList) GetExact(fullName string) *Package {
-	pkg, found := lo.Find(list, func(p Package) bool {
+	return list.tryFind(func(p Package) bool {
 		return strings.EqualFold(p.FullName, fullName)
 	})
-
-	if !found {
-		return nil
-	}
-
-	return &pkg
 }
 
 type Package struct {

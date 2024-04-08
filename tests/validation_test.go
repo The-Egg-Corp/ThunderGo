@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"fmt"
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
 	"os"
@@ -31,5 +30,5 @@ func Test_ValidateIcon(t *testing.T) {
 		t.Fatalf("expected success")
 	}
 
-	fmt.Println(util.Prettify(res))
+	util.PrettyPrint(res)
 }

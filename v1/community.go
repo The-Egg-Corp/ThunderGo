@@ -18,13 +18,13 @@ func (comm Community) AllPackages(predicate ...func(item Package, index int) boo
 		return nil, err
 	}
 
-	PackageCache = pkgs
+	pkgCache = pkgs
 	return pkgs, nil
 }
 
 func (comm Community) GetPackage(author string, name string) *Package {
-	if PackageCache != nil {
-		return PackageCache.Get(author, name)
+	if pkgCache != nil {
+		return pkgCache.Get(author, name)
 	}
 
 	return nil
