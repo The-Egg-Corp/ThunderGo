@@ -2,6 +2,7 @@ package experimental
 
 import (
 	"fmt"
+
 	"github.com/the-egg-corp/thundergo/common"
 	"github.com/the-egg-corp/thundergo/util"
 )
@@ -60,17 +61,9 @@ const (
 	Rejected   ReviewStatus = "rejected"
 )
 
-func (rs ReviewStatus) Unreviewed() bool {
-	return rs == Unreviewed
-}
-
-func (rs ReviewStatus) Approved() bool {
-	return rs == Approved
-}
-
-func (rs ReviewStatus) Rejected() bool {
-	return rs == Rejected
-}
+func (rs ReviewStatus) Unreviewed() bool { return rs == Unreviewed }
+func (rs ReviewStatus) Approved() bool   { return rs == Approved }
+func (rs ReviewStatus) Rejected() bool   { return rs == Rejected }
 
 //endregion
 

@@ -5,8 +5,6 @@ import (
 	"strings"
 
 	"github.com/the-egg-corp/thundergo/util"
-
-	"github.com/samber/lo"
 )
 
 var pkgCache PackageList
@@ -32,21 +30,16 @@ func (list PackageList) Filter(predicate func(pkg Package) bool) PackageList {
 	return arr
 }
 
-func tryFind[T any](arr []T, pred func(pkg T) bool) *T {
-	pkg, found := lo.Find(arr, pred)
-	return lo.Ternary(found, &pkg, nil)
-}
-
 // Grab a single package from the list given the package owner's name and the package's short name.
 func (list PackageList) Get(author string, name string) *Package {
-	return tryFind(list, func(p Package) bool {
+	return util.TryFind(list, func(p Package) bool {
 		return strings.EqualFold(p.Name, name) && strings.EqualFold(p.Owner, author)
 	})
 }
 
 // Grab a single package from the list given the package owner's name and the package's short name.
 func (list PackageList) GetByUUID(uuid string) *Package {
-	return tryFind(list, func(p Package) bool {
+	return util.TryFind(list, func(p Package) bool {
 		return strings.EqualFold(p.UUID, uuid)
 	})
 }
@@ -57,7 +50,7 @@ func (list PackageList) GetByUUID(uuid string) *Package {
 //
 //	"Owen3H-CSync"
 func (list PackageList) GetExact(fullName string) *Package {
-	return tryFind(list, func(p Package) bool {
+	return util.TryFind(list, func(p Package) bool {
 		return strings.EqualFold(p.FullName, fullName)
 	})
 }
@@ -94,7 +87,7 @@ type Package struct {
 //
 //	"v3.1", "v2", "1.0"
 func (pkg Package) GetVersion(verNumber string) *PackageVersion {
-	return tryFind(pkg.Versions, func(v PackageVersion) bool {
+	return util.TryFind(pkg.Versions, func(v PackageVersion) bool {
 		return strings.EqualFold(v.VersionNumber, strings.Replace(verNumber, "v", "", 1))
 	})
 }

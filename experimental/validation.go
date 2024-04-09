@@ -7,20 +7,12 @@ import (
 	_ "image/png"
 )
 
-type ValidatorResponse struct {
-	Success bool `json:"success"`
+func ValidateReadme(data []byte) (bool, error) {
+	return false, nil
 }
 
-type IconValidatorParams struct {
-	IconData string `json:"icon_data"`
-}
-
-func ValidateReadme() (ValidatorResponse, error) {
-	return ValidatorResponse{}, nil
-}
-
-func ValidateManifest() (ValidatorResponse, error) {
-	return ValidatorResponse{}, nil
+func ValidateManifest() (bool, error) {
+	return false, nil
 }
 
 // Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
