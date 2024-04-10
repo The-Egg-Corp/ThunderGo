@@ -29,7 +29,7 @@ func ValidateIcon(data []byte) (bool, error) {
 	// Verify dimensions
 	if width == 256 && height == 256 {
 		return true, nil
-	} else {
-		return false, errors.New("image dimensions did not match: 256x256")
 	}
+
+	return false, errors.New("image dimensions did not match: 256x256")
 }

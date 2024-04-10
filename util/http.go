@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"time"
+
+	"github.com/go-resty/resty/v2"
 )
 
 const REQ_TIMEOUT = 10 * time.Second
 const DOMAIN = "https://thunderstore.io/"
 
-var client = http.Client{Timeout: REQ_TIMEOUT}
+var client = resty.NewWithClient(&http.Client{Timeout: REQ_TIMEOUT})
 
 func post(url string, contentType string, body any) ([]byte, error) {
 	data, err := json.Marshal(&body)
@@ -20,27 +21,30 @@ func post(url string, contentType string, body any) ([]byte, error) {
 		return nil, err
 	}
 
-	response, err := http.Post(url, contentType, bytes.NewReader(data))
+	// req, _ := http.NewRequest("POST", url, bytes.NewReader(data))
+	// req.Header.Set("Content-Type", contentType)
+	// req.AddCookie(http.Cookie{})
+
+	response, err := client.R().
+		SetBody(bytes.NewReader(data)).
+		SetHeader("Content-Type", contentType).
+		Post(url)
+
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Println(response.StatusCode)
-	return closeAndRead(response)
+	fmt.Println(response.StatusCode())
+	return response.Body(), nil
 }
 
 func get(url string) ([]byte, error) {
-	response, err := client.Get(url)
+	response, err := client.R().Get(url)
 	if err != nil {
 		return nil, err
 	}
 
-	return closeAndRead(response)
-}
-
-func closeAndRead(res *http.Response) ([]byte, error) {
-	defer res.Body.Close()
-	return io.ReadAll(res.Body)
+	return response.Body(), nil
 }
 
 func asJSON[T interface{}](res []byte, err error) (T, error) {
