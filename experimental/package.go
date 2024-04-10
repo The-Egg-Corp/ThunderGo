@@ -22,6 +22,7 @@ type Package struct {
 	Latest         PackageVersion `json:"latest"`
 }
 
+// region PackageVersion Struct
 type PackageVersion struct {
 	Namespace     string        `json:"namespace"`
 	Name          string        `json:"name"`
@@ -52,18 +53,20 @@ func (pkg PackageVersion) getMarkdown(file string) (common.MarkdownResponse, err
 	return util.JsonGetRequest[common.MarkdownResponse](endpoint)
 }
 
+//endregion
+
 // region ReviewStatus Enum
 type ReviewStatus string
 
 const (
-	Unreviewed ReviewStatus = "unreviewed"
-	Approved   ReviewStatus = "approved"
-	Rejected   ReviewStatus = "rejected"
+	UNREVIEWED ReviewStatus = "unreviewed"
+	APPROVED   ReviewStatus = "approved"
+	REJECTED   ReviewStatus = "rejected"
 )
 
-func (rs ReviewStatus) Unreviewed() bool { return rs == Unreviewed }
-func (rs ReviewStatus) Approved() bool   { return rs == Approved }
-func (rs ReviewStatus) Rejected() bool   { return rs == Rejected }
+func (rs ReviewStatus) Unreviewed() bool { return rs == UNREVIEWED }
+func (rs ReviewStatus) Approved() bool   { return rs == APPROVED }
+func (rs ReviewStatus) Rejected() bool   { return rs == REJECTED }
 
 //endregion
 

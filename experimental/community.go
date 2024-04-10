@@ -2,6 +2,7 @@ package experimental
 
 import (
 	"fmt"
+
 	"github.com/the-egg-corp/thundergo/common"
 	"github.com/the-egg-corp/thundergo/util"
 )
@@ -16,20 +17,21 @@ type CommunityList struct {
 	Results  []*Community `json:"results"`
 }
 
-type Community struct {
-	Identifier              string  `json:"identifier"`
-	Name                    string  `json:"name"`
-	DiscordURL              *string `json:"discord_url"`
-	WikiURL                 *string `json:"wiki_url"`
-	PackageApprovalRequired bool    `json:"require_package_listing_approval"`
-}
-
 type CommunityCategories struct {
 	Results    []Category `json:"results"`
 	Pagination struct {
 		NextLink     any `json:"next_link"`
 		PreviousLink any `json:"previous_link"`
 	} `json:"pagination"`
+}
+
+// region Community Struct
+type Community struct {
+	Identifier              string  `json:"identifier"`
+	Name                    string  `json:"name"`
+	DiscordURL              *string `json:"discord_url"`
+	WikiURL                 *string `json:"wiki_url"`
+	PackageApprovalRequired bool    `json:"require_package_listing_approval"`
 }
 
 func (community Community) AllPackages() ([]Package, error) {
@@ -42,3 +44,5 @@ func (community Community) Categories() ([]Category, error) {
 
 	return res.Results, err
 }
+
+//endregion

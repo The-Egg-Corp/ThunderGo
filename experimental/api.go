@@ -21,18 +21,25 @@ func GetCommunities() (CommunityList, error) {
 }
 
 // Get a specific [Community] by it's identifier or short name.
-func GetCommunity(nameOrId string) (*Community, bool) {
+//
+// If the name/id does not match any existing community, the result will be nil.
+func GetCommunity(nameOrId string) (*Community, bool, error) {
 	communities, err := GetCommunities()
 
 	if err != nil {
-		return nil, false
+		return nil, false, err
 	}
 
-	return lo.Find(communities.Results, func(comm *Community) bool {
-		return strings.EqualFold(comm.Name, nameOrId) || strings.EqualFold(comm.Identifier, nameOrId)
+	comm, found := lo.Find(communities.Results, func(c *Community) bool {
+		return strings.EqualFold(c.Name, nameOrId) || strings.EqualFold(c.Identifier, nameOrId)
 	})
+
+	return comm, found, nil
 }
 
+// Get a single [Package] given it's owner and package short name.
+//
+// If an error occurred or it was not found, the result will be nil.
 func GetPackage(author string, name string) (*Package, error) {
 	endpoint := fmt.Sprint("api/experimental/package/", author, "/", name)
 	return util.JsonGetRequest[*Package](endpoint)

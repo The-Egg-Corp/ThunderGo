@@ -5,29 +5,10 @@ import (
 	"testing"
 
 	"github.com/samber/lo"
-	TSGOExp "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
 	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 )
 
-// region Experimental Tests
-func TestPackageExp(t *testing.T) {
-	var err error
-	var pkg *TSGOExp.Package
-
-	pkg, err = TSGOExp.GetPackage("Owen3H", "CSync")
-
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-
-	cl, _ := pkg.Latest.Readme()
-	util.PrettyPrint(cl)
-}
-
-//endregion
-
-// region V1 Tests
 func TestAllPackages(t *testing.T) {
 	var err error
 	var pkgs TSGOV1.PackageList
@@ -75,7 +56,7 @@ func TestPackageGet(t *testing.T) {
 
 	pkg := pkgs.Get("Owen3H", "CSync")
 	if pkg == nil {
-		t.Fatal(errors.New("Could not get package given the name and author."))
+		t.Fatal(errors.New("could not get package given the name and author"))
 	}
 
 	util.PrettyPrint(pkg)
@@ -89,7 +70,7 @@ func TestPackageGetExact(t *testing.T) {
 
 	pkg := pkgs.GetExact("Owen3H-CSync")
 	if pkg == nil {
-		t.Fatal(errors.New("Could not get package by its full name."))
+		t.Fatal(errors.New("could not get package by its full name"))
 	}
 
 	util.PrettyPrint(pkg)
@@ -103,7 +84,7 @@ func TestPackageGetByUUID(t *testing.T) {
 
 	pkg := pkgs.GetByUUID("13d217b1-1e90-431a-a826-cd29c9eaea36")
 	if pkg == nil {
-		t.Fatal(errors.New("Could not get package using UUID."))
+		t.Fatal(errors.New("could not get package using UUID"))
 	}
 
 	util.PrettyPrint(pkg)
@@ -142,5 +123,3 @@ func TestPackageDates(t *testing.T) {
 	util.PrettyPrint("Created " + pkg.DateCreated.Humanize())
 	util.PrettyPrint("Updated " + pkg.DateUpdated.Humanize())
 }
-
-//endregion

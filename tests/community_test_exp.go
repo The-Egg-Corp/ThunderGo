@@ -3,15 +3,16 @@ package tests
 import (
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
+
 	//TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 	"testing"
 )
 
 // region Experimental Tests
 func TestCommunityExp(t *testing.T) {
-	comm, found := TSGO.GetCommunity("lethal-company")
+	comm, found, _ := TSGO.GetCommunity("lethal-company")
 
-	if found == false {
+	if !found {
 		t.Error("Could not find the specified community!")
 	}
 

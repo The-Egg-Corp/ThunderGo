@@ -7,10 +7,26 @@ import (
 	_ "image/png"
 )
 
+type PackageSubmissionMetadata struct {
+	Author              string   `json:"author_name"`
+	Categories          []string `json:"categories"`
+	Communities         []string `json:"communities"`
+	HasNsfwContent      bool     `json:"has_nsfw_content"`
+	UUID                string   `json:"upload_uuid"`
+	CommunityCategories []string `json:"community_categories"`
+}
+
+// Not yet implemented.
+func SubmitPackage() (bool, error) {
+	return false, nil
+}
+
+// Not yet implemented.
 func ValidateReadme(data []byte) (bool, error) {
 	return false, nil
 }
 
+// Not yet implemented.
 func ValidateManifest() (bool, error) {
 	return false, nil
 }
