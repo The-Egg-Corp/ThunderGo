@@ -27,7 +27,7 @@ func TestCommunitiesExp(t *testing.T) {
 		t.Error("Could not get list of communities!")
 	}
 
-	util.PrettyPrint(comms.Results)
+	util.PrettyPrint(comms)
 }
 
 //endregion

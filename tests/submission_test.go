@@ -1,10 +1,11 @@
 package tests
 
 import (
-	TSGO "github.com/the-egg-corp/thundergo/experimental"
-	"github.com/the-egg-corp/thundergo/util"
 	"os"
 	"testing"
+
+	TSGO "github.com/the-egg-corp/thundergo/experimental"
+	"github.com/the-egg-corp/thundergo/util"
 )
 
 func TestValidateIcon(t *testing.T) {
@@ -15,7 +16,10 @@ func TestValidateIcon(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	valid, err := TSGO.ValidateIcon(icon)
+	valid, err := TSGO.ValidateIcon(TSGO.IconValidatorParams{
+		ImageData: icon,
+	})
+
 	if err != nil {
 		t.Fatalf(err.Error())
 	}

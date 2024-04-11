@@ -1,6 +1,7 @@
 package util
 
 import (
+	"regexp"
 	"strings"
 	"time"
 
@@ -42,4 +43,13 @@ func PrettyPrint(i interface{}) {
 func TryFind[T any](arr []T, pred func(pkg T) bool) *T {
 	pkg, found := lo.Find(arr, pred)
 	return lo.Ternary(found, &pkg, nil)
+}
+
+func CheckSemVer(version string) (bool, error) {
+	matched, err := regexp.MatchString(
+		`^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$`,
+		version,
+	)
+
+	return lo.Ternary(err == nil, matched, false), lo.Ternary(err == nil, nil, err)
 }

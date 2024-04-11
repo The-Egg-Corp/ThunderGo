@@ -17,7 +17,13 @@ func (b Base64String) String() string {
 }
 
 func GetCommunities() (CommunityList, error) {
-	return util.JsonGetRequest[CommunityList]("api/experimental/community")
+	res, err := util.JsonGetRequest[CommunitiesResponse]("api/experimental/community")
+
+	if err != nil {
+		return CommunityList{}, err
+	}
+
+	return res.Results, nil
 }
 
 // Get a specific [Community] by it's identifier or short name.
@@ -30,11 +36,15 @@ func GetCommunity(nameOrId string) (*Community, bool, error) {
 		return nil, false, err
 	}
 
-	comm, found := lo.Find(communities.Results, func(c *Community) bool {
+	comm, found := lo.Find(communities, func(c Community) bool {
 		return strings.EqualFold(c.Name, nameOrId) || strings.EqualFold(c.Identifier, nameOrId)
 	})
 
-	return comm, found, nil
+	if !found {
+		return nil, false, nil
+	}
+
+	return &comm, true, nil
 }
 
 // Get a single [Package] given it's owner and package short name.

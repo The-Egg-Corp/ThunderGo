@@ -11,10 +11,12 @@ import (
 
 type Category = common.PackageCategory
 
-type CommunityList struct {
-	Next     string       `json:"next"`
-	Previous string       `json:"previous"`
-	Results  []*Community `json:"results"`
+type CommunityList []Community
+
+type CommunitiesResponse struct {
+	Next     string        `json:"next"`
+	Previous string        `json:"previous"`
+	Results  CommunityList `json:"results"`
 }
 
 type CommunityCategories struct {
