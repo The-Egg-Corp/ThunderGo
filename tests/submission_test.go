@@ -26,3 +26,21 @@ func TestValidateIcon(t *testing.T) {
 
 	util.PrettyPrint(valid)
 }
+
+func TestValidateManifest(t *testing.T) {
+	var errs []string
+	data, err := os.ReadFile("../test_manifest.json")
+
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	valid, errs := TSGO.ValidateManifest(data)
+
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	util.PrettyPrint(valid)
+	util.PrettyPrint(errs)
+}

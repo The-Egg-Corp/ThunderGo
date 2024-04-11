@@ -43,24 +43,32 @@ func ValidateReadme(data []byte) (bool, error) {
 }
 
 // TODO: Implement this
-func ValidateManifest(data []byte) (bool, error) {
+func ValidateManifest(data []byte) (bool, []string) {
 	var manifest ManifestMetadata
-	err := json.Unmarshal(data, &manifest)
+	json.Unmarshal(data, &manifest)
 
-	if err != nil {
-		return false, err
+	var errors []string
+
+	AddIfEmpty(&errors, &manifest.Name, "required manifest property 'name' is empty or unspecified")
+	AddIfEmpty(&errors, &manifest.VersionNumber, "required manifest property 'version_number' is empty or unspecified")
+	AddIfEmpty(&errors, &manifest.Description, "required manifest property 'description' is empty or unspecified")
+
+	sv, _ := util.CheckSemVer(manifest.VersionNumber)
+	AddIfFalse(&errors, &sv, "manifest version does not follow semantic versioning (major.minor.patch)")
+
+	return len(errors) < 1, errors
+}
+
+func AddIfEmpty(arr *[]string, str *string, errStr string) {
+	if *str == "" || str == nil {
+		*arr = append(*arr, errStr)
 	}
+}
 
-	if manifest.Name == "" {
-		return false, errors.New("required manifest property 'name' is empty")
+func AddIfFalse(arr *[]string, val *bool, errStr string) {
+	if !*val {
+		*arr = append(*arr, errStr)
 	}
-
-	isSV, _ := util.CheckSemVer(manifest.VersionNumber)
-	if !isSV {
-		return false, errors.New("manifest version does not follow semantic versioning (major.minor.patch)")
-	}
-
-	return false, nil
 }
 
 // Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
