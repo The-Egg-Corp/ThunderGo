@@ -3,6 +3,7 @@ package experimental
 import (
 	"encoding/base64"
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/the-egg-corp/thundergo/util"
@@ -52,5 +53,7 @@ func GetCommunity(nameOrId string) (*Community, bool, error) {
 // If an error occurred or it was not found, the result will be nil.
 func GetPackage(author string, name string) (*Package, error) {
 	endpoint := fmt.Sprint("api/experimental/package/", author, "/", name)
-	return util.JsonGetRequest[*Package](endpoint)
+	pkg, err := util.JsonGetRequest[Package](endpoint)
+
+	return lo.Ternary(reflect.ValueOf(pkg).IsZero(), nil, &pkg), err
 }

@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -13,7 +14,7 @@ func TestValidateIcon(t *testing.T) {
 	icon, err := os.ReadFile("../test_icon.png")
 
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err.Error())
 	}
 
 	valid, err := TSGO.ValidateIcon(TSGO.IconValidatorParams{
@@ -21,7 +22,7 @@ func TestValidateIcon(t *testing.T) {
 	})
 
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err.Error())
 	}
 
 	util.PrettyPrint(valid)
@@ -32,15 +33,28 @@ func TestValidateManifest(t *testing.T) {
 	data, err := os.ReadFile("../test_manifest.json")
 
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err.Error())
 	}
 
-	valid, errs := TSGO.ValidateManifest(data)
+	valid, errs, err := TSGO.ValidateManifest("Owen3H", data)
 
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err.Error())
 	}
 
-	util.PrettyPrint(valid)
-	util.PrettyPrint(errs)
+	fmt.Println("Valid: ", valid)
+
+	if len(errs) > 0 {
+		util.PrettyPrint(errs)
+
+		if valid {
+			t.Fatal("errors were returned, but manifest is still valid")
+		}
+
+		return
+	}
+
+	if !valid {
+		t.Fatal("manifest was marked as invalid despite empty errors array")
+	}
 }
