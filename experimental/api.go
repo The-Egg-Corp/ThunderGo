@@ -2,6 +2,7 @@ package experimental
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -48,12 +49,17 @@ func GetCommunity(nameOrId string) (*Community, bool, error) {
 	return &comm, true, nil
 }
 
-// Get a single [Package] given it's owner and package short name.
+// Get a single [Package] given it's owner and package short name. Both are case-sensitive!
 //
 // If an error occurred or it was not found, the result will be nil.
 func GetPackage(author string, name string) (*Package, error) {
 	endpoint := fmt.Sprint("api/experimental/package/", author, "/", name)
 	pkg, err := util.JsonGetRequest[Package](endpoint)
 
-	return lo.Ternary(reflect.ValueOf(pkg).IsZero(), nil, &pkg), err
+	// Zero value, couldn't find package.
+	if reflect.ValueOf(pkg).IsZero() {
+		return nil, errors.New("package not found. ensure case-sensitive parameters are correct")
+	}
+
+	return &pkg, err
 }

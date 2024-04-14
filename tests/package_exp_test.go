@@ -15,6 +15,8 @@ func TestPackageExp(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	cl, _ := pkg.Latest.Readme()
-	util.PrettyPrint(cl)
+	if pkg != nil {
+		cl, _ := pkg.Latest.Readme()
+		util.PrettyPrint(cl)
+	}
 }
