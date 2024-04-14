@@ -2,6 +2,7 @@ package v1
 
 import (
 	"fmt"
+
 	"github.com/the-egg-corp/thundergo/util"
 )
 
@@ -18,15 +19,15 @@ func (comm Community) AllPackages(predicate ...func(item Package, index int) boo
 		return nil, err
 	}
 
-	pkgCache = pkgs
+	//pkgCache = pkgs
 	return pkgs, nil
 }
 
 // Gets a single package from this community given the owner and package name.
 func (comm Community) GetPackage(author string, name string) *Package {
-	if pkgCache != nil {
-		return pkgCache.Get(author, name)
-	}
+	// if pkgCache != nil {
+	// 	return pkgCache.Get(author, name)
+	// }
 
 	pkgs, err := comm.AllPackages()
 

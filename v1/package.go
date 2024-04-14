@@ -7,7 +7,7 @@ import (
 	"github.com/the-egg-corp/thundergo/util"
 )
 
-var pkgCache PackageList
+//var pkgCache PackageList
 
 // An alias for a [Package] array with helper functions attached.
 type PackageList []Package
