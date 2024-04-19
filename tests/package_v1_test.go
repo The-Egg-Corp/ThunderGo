@@ -2,8 +2,11 @@ package tests
 
 import (
 	"errors"
+	"fmt"
 	"testing"
+	"time"
 
+	//"github.com/samber/lo"
 	"github.com/samber/lo"
 	"github.com/the-egg-corp/thundergo/util"
 	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
@@ -22,7 +25,7 @@ func TestAllPackages(t *testing.T) {
 		return pkg.FullName, pkg.UUID
 	})
 
-	util.PrettyPrint(pkgsMap)
+	fmt.Println(pkgsMap)
 }
 
 func TestCommunityPackages(t *testing.T) {
@@ -31,11 +34,12 @@ func TestCommunityPackages(t *testing.T) {
 	}
 
 	pkgs, _ := comm.AllPackages()
-	pkgs = pkgs.Filter(func(pkg TSGOV1.Package) bool {
-		return pkg.Owner == "Owen3H"
-	})
+	// pkgs = pkgs.Filter(func(pkg TSGOV1.Package) bool {
+	// 	return pkg.Owner == "Owen3H"
+	// })
 
-	util.PrettyPrint(pkgs)
+	time.Sleep(100 * time.Millisecond)
+	util.PrettyPrint(len(pkgs))
 }
 
 func TestPackageVersion(t *testing.T) {
