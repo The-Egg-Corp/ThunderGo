@@ -7,7 +7,7 @@ import (
 	"time"
 
 	//"github.com/samber/lo"
-	"github.com/samber/lo"
+
 	"github.com/the-egg-corp/thundergo/util"
 	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 )
@@ -21,11 +21,7 @@ func TestAllPackages(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	pkgsMap := lo.Associate(pkgs, func(pkg TSGOV1.Package) (string, string) {
-		return pkg.FullName, pkg.UUID
-	})
-
-	fmt.Println(pkgsMap)
+	fmt.Println(pkgs.Size())
 }
 
 func TestCommunityPackages(t *testing.T) {
@@ -48,7 +44,7 @@ func TestPackageVersion(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	pkg := pkgs.Get("Owen3H", "CSync").GetVersion("2.0.0")
+	pkg := pkgs.Get("Owen3H", "CSync").GetVersion("3.0.0")
 	util.PrettyPrint(pkg)
 }
 
