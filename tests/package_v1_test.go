@@ -24,9 +24,21 @@ func TestAllPackages(t *testing.T) {
 	fmt.Println(pkgs.Size())
 }
 
+// func TestPackagesFromList(t *testing.T) {
+// 	var err error
+// 	var pkgs TSGOV1.PackageList
+
+// 	pkgs, err = TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList(""))
+// 	if err != nil {
+// 		t.Fatal(err.Error())
+// 	}
+
+// 	fmt.Println(len(pkgs))
+// }
+
 func TestCommunityPackages(t *testing.T) {
 	comm := TSGOV1.Community{
-		Identifier: "lethal-company",
+		Identifier: "riskofrain2",
 	}
 
 	pkgs, _ := comm.AllPackages()

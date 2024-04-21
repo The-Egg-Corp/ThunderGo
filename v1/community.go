@@ -6,8 +6,18 @@ import (
 	"github.com/the-egg-corp/thundergo/util"
 )
 
+type CommunityList []Community
+
 type Community struct {
 	Identifier string
+}
+
+func NewCommunityList(identifiers ...string) (list CommunityList) {
+	for _, cur := range identifiers {
+		list = append(list, Community{Identifier: cur})
+	}
+
+	return list
 }
 
 // Returns a list of all packages (mods) within this community.

@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"sync"
-
+	lo "github.com/samber/lo"
 	Exp "github.com/the-egg-corp/thundergo/experimental"
+	"golang.org/x/sync/errgroup"
 )
 
 // The list of every package on Thunderstore across every community.
@@ -14,29 +14,36 @@ func GetAllPackages() (PackageList, error) {
 		return nil, err
 	}
 
-	len := communities.Size()
+	identifiers := lo.Map(communities, func(c Exp.Community, _ int) string {
+		return c.Identifier
+	})
 
-	var wg sync.WaitGroup
-	wg.Add(len)
+	return PackagesFromCommunities(NewCommunityList(identifiers...))
+}
 
-	var all PackageList
-	worker := func(identifier string) {
-		// get package
-		comm := Community{
-			Identifier: identifier,
-		}
+// Returns a single slice with all packages from the specified communities.
+func PackagesFromCommunities(communities []Community) (PackageList, error) {
+	amt := len(communities)
 
-		pkgs, _ := comm.AllPackages()
-		all = append(all, pkgs...)
+	g := errgroup.Group{}
+	g.SetLimit(300)
 
-		defer wg.Done()
+	var list PackageList
+
+	for i := 0; i < amt; i++ {
+		i := i
+		g.Go(func() error {
+			pkgs, err := communities[i].AllPackages()
+			if err != nil {
+				return err
+			}
+
+			list.AddFlat(pkgs)
+			return nil
+		})
 	}
 
-	for i := 0; i < len; i++ {
-		go worker(communities[i].Identifier)
-	}
+	g.Wait()
 
-	wg.Wait()
-
-	return all, nil
+	return list, nil
 }

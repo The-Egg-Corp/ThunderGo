@@ -30,6 +30,10 @@ func (list PackageList) Filter(predicate func(pkg Package) bool) PackageList {
 	return arr
 }
 
+func (original *PackageList) AddFlat(list PackageList) {
+	*original = append(*original, list...)
+}
+
 // Grab a single package from the list given the package owner's name and the package's short name.
 func (list PackageList) Get(author string, name string) *Package {
 	return util.TryFind(list, func(p Package) bool {

@@ -36,10 +36,6 @@ type Community struct {
 	PackageApprovalRequired bool    `json:"require_package_listing_approval"`
 }
 
-// func (community Community) AllPackages() ([]Package, error) {
-// 	return nil, nil
-// }
-
 func (community Community) Categories() ([]Category, error) {
 	endpoint := fmt.Sprint("api/experimental/community/", community.Identifier, "/category")
 	res, err := util.JsonGetRequest[CommunityCategories](endpoint)
