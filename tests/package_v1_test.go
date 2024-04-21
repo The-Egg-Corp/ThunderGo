@@ -7,7 +7,7 @@ import (
 	"time"
 
 	//"github.com/samber/lo"
-	"github.com/samber/lo"
+
 	"github.com/the-egg-corp/thundergo/util"
 	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 )
@@ -21,16 +21,28 @@ func TestAllPackages(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	pkgsMap := lo.Associate(pkgs, func(pkg TSGOV1.Package) (string, string) {
-		return pkg.FullName, pkg.UUID
-	})
+	// pkgsMap := lo.Associate(pkgs, func(pkg TSGOV1.Package) (string, string) {
+	// 	return pkg.FullName, pkg.UUID
+	// })
 
-	fmt.Println(pkgsMap)
+	fmt.Println(len(pkgs))
 }
+
+// func TestPackagesFromList(t *testing.T) {
+// 	var err error
+// 	var pkgs TSGOV1.PackageList
+
+// 	pkgs, err = TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList(""))
+// 	if err != nil {
+// 		t.Fatal(err.Error())
+// 	}
+
+// 	fmt.Println(len(pkgs))
+// }
 
 func TestCommunityPackages(t *testing.T) {
 	comm := TSGOV1.Community{
-		Identifier: "lethal-company",
+		Identifier: "riskofrain2",
 	}
 
 	pkgs, _ := comm.AllPackages()
