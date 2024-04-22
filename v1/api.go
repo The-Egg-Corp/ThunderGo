@@ -1,9 +1,12 @@
 package v1
 
 import (
+	"sync"
+
+	"golang.org/x/sync/errgroup"
+
 	lo "github.com/samber/lo"
 	Exp "github.com/the-egg-corp/thundergo/experimental"
-	"golang.org/x/sync/errgroup"
 )
 
 // The list of every package on Thunderstore across every community.
@@ -26,9 +29,10 @@ func PackagesFromCommunities(communities []Community) (PackageList, error) {
 	amt := len(communities)
 
 	g := errgroup.Group{}
-	g.SetLimit(300)
+	g.SetLimit(200)
 
 	var list PackageList
+	var mut sync.Mutex
 
 	for i := 0; i < amt; i++ {
 		i := i
@@ -38,7 +42,12 @@ func PackagesFromCommunities(communities []Community) (PackageList, error) {
 				return err
 			}
 
-			list.AddFlat(pkgs)
+			if pkgs.Size() > 0 {
+				mut.Lock()
+				list.AddFlat(pkgs)
+				mut.Unlock()
+			}
+
 			return nil
 		})
 	}
