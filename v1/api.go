@@ -5,7 +5,7 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	lo "github.com/samber/lo"
+	lop "github.com/samber/lo/parallel"
 	Exp "github.com/the-egg-corp/thundergo/experimental"
 )
 
@@ -17,7 +17,7 @@ func GetAllPackages() (PackageList, error) {
 		return nil, err
 	}
 
-	identifiers := lo.Map(communities, func(c Exp.Community, _ int) string {
+	identifiers := lop.Map(communities, func(c Exp.Community, _ int) string {
 		return c.Identifier
 	})
 
@@ -52,7 +52,7 @@ func PackagesFromCommunities(communities []Community) (PackageList, error) {
 		})
 	}
 
-	g.Wait()
+	err := g.Wait()
 
-	return list, nil
+	return list, err
 }
