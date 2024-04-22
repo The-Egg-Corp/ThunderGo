@@ -2,7 +2,6 @@ package tests
 
 import (
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
-	"github.com/the-egg-corp/thundergo/util"
 
 	//TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 	"testing"
@@ -16,18 +15,21 @@ func TestCommunityExp(t *testing.T) {
 		t.Error("Could not find the specified community!")
 	}
 
-	categories, _ := comm.Categories()
-	util.PrettyPrint(categories)
+	_, err := comm.Categories()
+	if err != nil {
+		t.Fatal(err)
+	}
+	//util.PrettyPrint(categories)
 }
 
 func TestCommunitiesExp(t *testing.T) {
-	comms, err := TSGO.GetCommunities()
+	_, err := TSGO.GetCommunities()
 
 	if err != nil {
 		t.Error("Could not get list of communities!")
 	}
 
-	util.PrettyPrint(comms)
+	//util.PrettyPrint(comms)
 }
 
 //endregion

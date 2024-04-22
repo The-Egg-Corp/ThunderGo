@@ -56,8 +56,10 @@ func TestPackageVersion(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pkg := pkgs.Get("Owen3H", "CSync").GetVersion("3.0.0")
-	util.PrettyPrint(pkg)
+	ver := pkgs.Get("Owen3H", "CSync").GetVersion("3.0.0")
+	if ver == nil {
+		t.Fatal(errors.New("could not find specific package version"))
+	}
 }
 
 func TestPackageGet(t *testing.T) {
@@ -71,7 +73,7 @@ func TestPackageGet(t *testing.T) {
 		t.Fatal(errors.New("could not get package given the name and author"))
 	}
 
-	util.PrettyPrint(pkg)
+	//util.PrettyPrint(pkg)
 }
 
 func TestPackageGetExact(t *testing.T) {
@@ -85,7 +87,7 @@ func TestPackageGetExact(t *testing.T) {
 		t.Fatal(errors.New("could not get package by its full name"))
 	}
 
-	util.PrettyPrint(pkg)
+	//util.PrettyPrint(pkg)
 }
 
 func TestPackageGetByUUID(t *testing.T) {
@@ -99,7 +101,7 @@ func TestPackageGetByUUID(t *testing.T) {
 		t.Fatal(errors.New("could not get package using UUID"))
 	}
 
-	util.PrettyPrint(pkg)
+	//util.PrettyPrint(pkg)
 }
 
 func TestMetrics(t *testing.T) {

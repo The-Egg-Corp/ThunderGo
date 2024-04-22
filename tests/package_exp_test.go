@@ -1,10 +1,10 @@
 package tests
 
 import (
+	"errors"
 	"testing"
 
 	TSGOExp "github.com/the-egg-corp/thundergo/experimental"
-	"github.com/the-egg-corp/thundergo/util"
 )
 
 func TestPackageExp(t *testing.T) {
@@ -12,11 +12,16 @@ func TestPackageExp(t *testing.T) {
 	pkg, err := TSGOExp.GetPackage("Owen3H", "CSync")
 
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	if pkg != nil {
-		cl, _ := pkg.Latest.Readme()
-		util.PrettyPrint(cl)
+		_, e := pkg.Latest.Readme()
+
+		if e != nil {
+			t.Fatal(errors.New("unable to get the README from the latest version of the specified package"))
+		}
+
+		//util.PrettyPrint(cl)
 	}
 }

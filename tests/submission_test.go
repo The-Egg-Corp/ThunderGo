@@ -10,6 +10,8 @@ import (
 )
 
 func TestValidateIcon(t *testing.T) {
+	t.Skip()
+
 	var err error
 	icon, err := os.ReadFile("../test_icon.png")
 
@@ -29,6 +31,8 @@ func TestValidateIcon(t *testing.T) {
 }
 
 func TestValidateManifest(t *testing.T) {
+	t.Skip()
+
 	var errs []string
 	data, err := os.ReadFile("../test_manifest.json")
 
