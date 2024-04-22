@@ -45,6 +45,30 @@ func TryFind[T any](arr []T, pred func(pkg T) bool) *T {
 	return lo.Ternary(found, &pkg, nil)
 }
 
+func Exclude[T any, V comparable](list []T, subset []V, match func(T, V) bool) []T {
+	if len(subset) == 0 {
+		return list
+	}
+
+	excludeSet := make(map[V]struct{})
+
+	// Create set to fast lookup items in the subset
+	for _, category := range subset {
+		excludeSet[category] = struct{}{}
+	}
+
+	return lo.Filter(list, func(item T, _ int) bool {
+		for cur := range excludeSet {
+			if match(item, cur) {
+				return false
+			}
+		}
+
+		// If none of the package's categories are in the exclude set, return true
+		return true
+	})
+}
+
 func CheckSemVer(version string) (bool, error) {
 	matched, err := regexp.MatchString(
 		`^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$`,
