@@ -29,7 +29,7 @@ func PackagesFromCommunities(communities []Community) (PackageList, error) {
 	amt := len(communities)
 
 	g := errgroup.Group{}
-	g.SetLimit(200)
+	g.SetLimit(300)
 
 	var list PackageList
 	var mut sync.Mutex

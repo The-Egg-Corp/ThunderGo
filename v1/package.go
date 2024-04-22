@@ -46,7 +46,6 @@ func (list PackageList) ExcludeCategories(categories ...string) PackageList {
 }
 
 func (original *PackageList) AddFlat(list PackageList) {
-	// TODO: Fix data race
 	*original = append(*original, list...)
 }
 
