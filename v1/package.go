@@ -33,17 +33,6 @@ func (list PackageList) Filter(predicate func(pkg Package) bool) PackageList {
 // Returns a new list containing only packages that do NOT have any of the input categories.
 // If no parameters are passed, the original list is returned unchanged.
 func (list PackageList) ExcludeCategories(categories ...string) PackageList {
-	if len(categories) == 0 {
-		return list
-	}
-
-	categorySet := make(map[string]struct{})
-
-	// Create a set for fast lookup of the given categories
-	for _, category := range categories {
-		categorySet[category] = struct{}{}
-	}
-
 	return util.Exclude(list, categories, func(pkg Package, category string) bool {
 		// Match based on the category in the subset
 		for _, cur := range pkg.Categories {

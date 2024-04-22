@@ -18,7 +18,7 @@ func TestAllPackages(t *testing.T) {
 
 	pkgs, err = TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	fmt.Println(pkgs.Size())
@@ -30,10 +30,10 @@ func TestPackagesFromList(t *testing.T) {
 
 	pkgs, err = TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList("riskofrain2", "valheim"))
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
-	fmt.Println(len(pkgs))
+	fmt.Println(pkgs.Size())
 }
 
 func TestCommunityPackages(t *testing.T) {
@@ -47,13 +47,13 @@ func TestCommunityPackages(t *testing.T) {
 	// })
 
 	time.Sleep(100 * time.Millisecond)
-	util.PrettyPrint(len(pkgs))
+	util.PrettyPrint(pkgs.Size())
 }
 
 func TestPackageVersion(t *testing.T) {
 	pkgs, err := TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	pkg := pkgs.Get("Owen3H", "CSync").GetVersion("3.0.0")
@@ -63,7 +63,7 @@ func TestPackageVersion(t *testing.T) {
 func TestPackageGet(t *testing.T) {
 	pkgs, err := TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	pkg := pkgs.Get("Owen3H", "CSync")
@@ -77,7 +77,7 @@ func TestPackageGet(t *testing.T) {
 func TestPackageGetExact(t *testing.T) {
 	pkgs, err := TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	pkg := pkgs.GetExact("Owen3H-CSync")
@@ -91,7 +91,7 @@ func TestPackageGetExact(t *testing.T) {
 func TestPackageGetByUUID(t *testing.T) {
 	pkgs, err := TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	pkg := pkgs.GetByUUID("13d217b1-1e90-431a-a826-cd29c9eaea36")
@@ -105,7 +105,7 @@ func TestPackageGetByUUID(t *testing.T) {
 func TestMetrics(t *testing.T) {
 	pkgs, err := TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	metrics, err := pkgs.Get("Owen3H", "CSync").Metrics()
@@ -119,7 +119,7 @@ func TestMetrics(t *testing.T) {
 func TestPackageDates(t *testing.T) {
 	pkgs, err := TSGOV1.GetAllPackages()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	pkg := pkgs.Get("Owen3H", "CSync")
@@ -134,4 +134,20 @@ func TestPackageDates(t *testing.T) {
 
 	util.PrettyPrint("Created " + pkg.DateCreated.Humanize())
 	util.PrettyPrint("Updated " + pkg.DateUpdated.Humanize())
+}
+
+func TestPackageFilter(t *testing.T) {
+	comm := TSGOV1.Community{
+		Identifier: "riskofrain2",
+	}
+
+	pkgs, err := comm.AllPackages()
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	filtered := pkgs.ExcludeCategories("modpack", "modpacks")
+
+	fmt.Println(filtered.Size())
 }
