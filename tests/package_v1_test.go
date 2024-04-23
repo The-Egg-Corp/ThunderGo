@@ -34,7 +34,7 @@ func TestCommunityPackages(t *testing.T) {
 	util.PrettyPrint(pkgs.Size())
 }
 
-func TestPackageGet(t *testing.T) {
+func TestPackageGetMethods(t *testing.T) {
 	pkgs, err := comm.AllPackages()
 	if err != nil {
 		t.Fatal(err)
@@ -64,17 +64,21 @@ func TestPackageGet(t *testing.T) {
 }
 
 func TestMetrics(t *testing.T) {
-	pkgs, err := comm.AllPackages()
+	pkg := comm.GetPackage("Owen3H", "CSync")
+	if pkg == nil {
+		t.Fatal(errors.New("error retrieving metrics: package not found"))
+	}
+
+	metrics, err := pkg.Metrics()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	metrics, err := pkgs.Get("Owen3H", "CSync").Metrics()
-	if err != nil {
-		t.Fatal(err)
+	if util.Zero(metrics) {
+		t.Fatal(errors.New("could not retreive metrics on existing package"))
 	}
 
-	util.PrettyPrint(metrics)
+	//util.PrettyPrint(metrics)
 }
 
 func TestPackageDates(t *testing.T) {
@@ -99,12 +103,10 @@ func TestPackageDates(t *testing.T) {
 
 func TestPackageFilter(t *testing.T) {
 	pkgs, err := comm.AllPackages()
-
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	filtered := pkgs.ExcludeCategories("modpack", "modpacks")
-
 	fmt.Println(filtered.Size())
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"reflect"
 	"strings"
 
 	"github.com/the-egg-corp/thundergo/util"
@@ -57,7 +56,7 @@ func GetPackage(author string, name string) (*Package, error) {
 	pkg, err := util.JsonGetRequest[Package](endpoint)
 
 	// Zero value, couldn't find package.
-	if reflect.ValueOf(pkg).IsZero() {
+	if util.Zero(pkg) {
 		return nil, errors.New("package not found. ensure case-sensitive parameters are correct")
 	}
 

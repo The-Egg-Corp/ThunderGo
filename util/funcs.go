@@ -1,6 +1,7 @@
 package util
 
 import (
+	"reflect"
 	"regexp"
 	"strings"
 	"time"
@@ -32,6 +33,10 @@ func (dt *DateTime) UnmarshalJSON(b []byte) error {
 //	"6 seconds ago", "2 months ago" or "3 days from now"
 func (dt DateTime) Humanize() string {
 	return humanize.Time(dt.Time)
+}
+
+func Zero(v interface{}) bool {
+	return lo.Ternary(v != nil, true, reflect.ValueOf(v).IsZero())
 }
 
 // Prints the interface to STDOUT in a readable way.

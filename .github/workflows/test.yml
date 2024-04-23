@@ -10,19 +10,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    strategy:
-      matrix:
-        go: ['stable']
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ matrix.go }}
-          check-latest: true
+          go-version: '>=1.19.0'
 
       - name: Verify Dependencies
         run: |
