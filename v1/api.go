@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"sync"
 
 	"golang.org/x/sync/errgroup"
@@ -26,18 +27,22 @@ func GetAllPackages() (PackageList, error) {
 
 // Returns a single slice with all packages from the specified communities.
 func PackagesFromCommunities(communities []Community) (PackageList, error) {
-	amt := len(communities)
+	var list PackageList
+	var mut sync.Mutex
 
 	g := errgroup.Group{}
 	g.SetLimit(300)
 
-	var list PackageList
-	var mut sync.Mutex
+	fmt.Println(len(communities))
 
-	for i := 0; i < amt; i++ {
+	for i := 0; i < len(communities); i++ {
 		i := i
 		g.Go(func() error {
-			pkgs, err := communities[i].AllPackages()
+			comm := communities[i]
+
+			pkgs, err := comm.AllPackages()
+			//fmt.Println(pkgs.Size())
+
 			if err != nil {
 				return err
 			}
@@ -53,6 +58,5 @@ func PackagesFromCommunities(communities []Community) (PackageList, error) {
 	}
 
 	err := g.Wait()
-
 	return list, err
 }
