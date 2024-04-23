@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/samber/lo"
 	"github.com/the-egg-corp/thundergo/util"
 )
 
@@ -47,6 +48,12 @@ func (list PackageList) ExcludeCategories(categories ...string) PackageList {
 
 func (original *PackageList) AddFlat(list PackageList) {
 	*original = append(*original, list...)
+}
+
+func (original *PackageList) ToMap() map[string]Package {
+	return lo.Associate(*original, func(pkg Package) (string, Package) {
+		return pkg.UUID, pkg
+	})
 }
 
 // Grab a single package from the list given the package owner's name and the package's short name.
