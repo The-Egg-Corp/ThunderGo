@@ -13,6 +13,8 @@ import (
 const REQ_TIMEOUT = 10 * time.Second
 const DOMAIN = "https://thunderstore.io/"
 
+//const AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0 (Edition std-1)"
+
 var client = resty.NewWithClient(&http.Client{Timeout: REQ_TIMEOUT})
 
 func post(url string, contentType string, body any) ([]byte, error) {
@@ -43,6 +45,10 @@ func get(url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// if !response.IsSuccess() {
+	// 	fmt.Println(fmt.Sprint(response.StatusCode(), " ", url))
+	// }
 
 	return response.Body(), nil
 }
