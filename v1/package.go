@@ -57,9 +57,9 @@ func (original *PackageList) ToMap() map[string]Package {
 }
 
 // Grab a single package from the list given the package owner's name and the package's short name.
-func (list PackageList) Get(author string, name string) *Package {
+func (list PackageList) Get(owner string, name string) *Package {
 	return util.TryFind(list, func(p Package) bool {
-		return strings.EqualFold(p.Name, name) && strings.EqualFold(p.Owner, author)
+		return strings.EqualFold(p.Name, name) && strings.EqualFold(p.Owner, owner)
 	})
 }
 

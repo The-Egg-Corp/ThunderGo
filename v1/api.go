@@ -7,20 +7,21 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// // The list of every package on Thunderstore across every community.
-// func GetAllPackages() (PackageList, error) {
-// 	communities, err := Exp.GetCommunities()
+func PackagesFromCommunity(identifier string) (PackageList, error) {
+	comm := Community{
+		Identifier: identifier,
+	}
 
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	return comm.AllPackages()
+}
 
-// 	identifiers := lop.Map(communities, func(c Exp.Community, _ int) string {
-// 		return c.Identifier
-// 	})
+func PackageFromCommunity(identifier string, owner string, packageName string) *Package {
+	comm := Community{
+		Identifier: identifier,
+	}
 
-// 	return PackagesFromCommunities(NewCommunityList(identifiers...))
-// }
+	return comm.GetPackage(owner, packageName)
+}
 
 // Returns a single slice with all packages from the specified communities.
 func PackagesFromCommunities(communities []Community) (PackageList, error) {

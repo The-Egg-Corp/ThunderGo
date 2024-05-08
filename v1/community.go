@@ -34,7 +34,7 @@ func (comm Community) AllPackages(predicate ...func(item Package, index int) boo
 }
 
 // Gets a single package from this community given the owner and package name.
-func (comm Community) GetPackage(author string, name string) *Package {
+func (comm Community) GetPackage(owner string, name string) *Package {
 	// if pkgCache != nil {
 	// 	return pkgCache.Get(author, name)
 	// }
@@ -45,5 +45,5 @@ func (comm Community) GetPackage(author string, name string) *Package {
 		return nil
 	}
 
-	return pkgs.Get(author, name)
+	return pkgs.Get(owner, name)
 }
