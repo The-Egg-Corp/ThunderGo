@@ -52,7 +52,7 @@ func GetCommunity(nameOrId string) (*Community, bool, error) {
 //
 // If an error occurred or it was not found, the result will be nil.
 func GetPackage(author string, name string) (*Package, error) {
-	endpoint := fmt.Sprint("api/experimental/package/", author, "/", name)
+	endpoint := fmt.Sprintf("api/experimental/package/%s/%s", author, name)
 	pkg, err := util.JsonGetRequest[Package](endpoint)
 
 	// Zero value, couldn't find package.

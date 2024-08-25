@@ -36,7 +36,7 @@ func (dt DateTime) Humanize() string {
 }
 
 func Zero(v interface{}) bool {
-	return lo.Ternary(v != nil, true, reflect.ValueOf(v).IsZero())
+	return lo.Ternary(v != nil, false, reflect.ValueOf(v).IsZero())
 }
 
 // Prints the interface to STDOUT in a readable way.

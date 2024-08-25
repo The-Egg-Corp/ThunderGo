@@ -17,7 +17,7 @@ const DOMAIN = "https://thunderstore.io/"
 
 var client = resty.NewWithClient(&http.Client{Timeout: REQ_TIMEOUT})
 
-func post(url string, contentType string, body any) ([]byte, error) {
+func Post(url string, contentType string, body any) ([]byte, error) {
 	data, err := json.Marshal(&body)
 	if err != nil {
 		return nil, err
@@ -40,15 +40,14 @@ func post(url string, contentType string, body any) ([]byte, error) {
 	return response.Body(), nil
 }
 
-func get(url string) ([]byte, error) {
-	response, err := client.R().Get(url)
+func Get(url string, contentType string) ([]byte, error) {
+	response, err := client.R().
+		SetHeader("Content-Type", contentType).
+		Get(url)
+
 	if err != nil {
 		return nil, err
 	}
-
-	// if !response.IsSuccess() {
-	// 	fmt.Println(fmt.Sprint(response.StatusCode(), " ", url))
-	// }
 
 	return response.Body(), nil
 }
@@ -65,9 +64,9 @@ func asJSON[T interface{}](res []byte, err error) (T, error) {
 }
 
 func JsonGetRequest[T interface{}](endpoint string) (T, error) {
-	return asJSON[T](get(DOMAIN + endpoint))
+	return asJSON[T](Get(DOMAIN+endpoint, "application/json"))
 }
 
 func JsonPostRequest[T interface{}](endpoint string, body any) (T, error) {
-	return asJSON[T](post(DOMAIN+endpoint, "application/json", body))
+	return asJSON[T](Post(DOMAIN+endpoint, "application/json", body))
 }

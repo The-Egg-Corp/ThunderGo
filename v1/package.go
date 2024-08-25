@@ -101,6 +101,10 @@ type Package struct {
 	Versions       []PackageVersion `json:"versions"`
 }
 
+func (pkg Package) LatestVersion() PackageVersion {
+	return pkg.Versions[0]
+}
+
 // Gets a specific [PackageVersion] from this package's list of versions.
 //
 // verNumber should be specified in the format: major.minor.patch
@@ -141,6 +145,10 @@ type PackageVersion struct {
 	Active        bool          `json:"is_active"`
 	VersionNumber string        `json:"version_number"`
 	WebsiteURL    string        `json:"website_url"`
+}
+
+func (ver PackageVersion) Download() ([]byte, error) {
+	return util.Get(ver.DownloadURL, "application/zip")
 }
 
 // type PackageVersion struct {

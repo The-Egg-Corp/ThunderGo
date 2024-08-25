@@ -110,3 +110,13 @@ func TestPackageFilter(t *testing.T) {
 	filtered := pkgs.ExcludeCategories("modpack", "modpacks")
 	fmt.Println(filtered.Size())
 }
+
+func TestDownloadVersion(t *testing.T) {
+	pkg := comm.GetPackage("Owen3H", "CSync")
+	if pkg == nil {
+		t.Fatal(errors.New("error downloading version: package not found"))
+	}
+
+	data, _ := pkg.LatestVersion().Download()
+	println(data)
+}
