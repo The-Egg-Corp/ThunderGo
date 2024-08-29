@@ -101,8 +101,25 @@ type Package struct {
 	Versions       []PackageVersion `json:"versions"`
 }
 
+// Alias for [v1.Package.Versions][0]
 func (pkg Package) LatestVersion() PackageVersion {
 	return pkg.Versions[0]
+}
+
+// Determines if the package is a modpack by checking the latest version has either a "modpack" or "modpacks" category.
+// In addition, the description can also be checked in-case the package's categories are tagged incorrectly.
+// When passing `true` the description must begin with "modpack " (including the whitespace). Simply pass `false` to disable this behaviour.
+func (pkg Package) IsModpack(checkDescription bool) bool {
+	for _, category := range pkg.Categories {
+		category = strings.ToLower(category)
+		return category == "modpack" || category == "modpacks"
+	}
+
+	if !checkDescription {
+		return false
+	}
+
+	return strings.HasPrefix(strings.ToLower(pkg.LatestVersion().Description), "modpack ")
 }
 
 // Gets a specific [PackageVersion] from this package's list of versions.

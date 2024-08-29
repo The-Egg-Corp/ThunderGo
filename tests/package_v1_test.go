@@ -120,3 +120,12 @@ func TestDownloadVersion(t *testing.T) {
 	data, _ := pkg.LatestVersion().Download()
 	println(data)
 }
+
+func TestPackageFromCommunity(t *testing.T) {
+	pkg := TSGOV1.PackageFromCommunity("lethal-company", "Megalophobia", "MEGALOPHOBIA")
+	if pkg == nil {
+		t.Fatal("package not found in community")
+	}
+
+	util.PrettyPrint(pkg)
+}
