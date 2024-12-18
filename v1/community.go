@@ -40,7 +40,6 @@ func (comm Community) GetPackage(owner string, name string) *Package {
 	// }
 
 	pkgs, err := comm.AllPackages()
-
 	if err != nil {
 		return nil
 	}

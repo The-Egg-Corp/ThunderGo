@@ -10,10 +10,11 @@ import (
 //var commCache CommunityList
 
 type Category = common.PackageCategory
-
 type CommunityList []Community
 
-func (list CommunityList) Size() int { return len(list) }
+func (list CommunityList) Size() int {
+	return len(list)
+}
 
 type CommunitiesResponse struct {
 	Results CommunityList `json:"results"`
@@ -27,7 +28,6 @@ type CommunityCategories struct {
 	} `json:"pagination"`
 }
 
-// region Community Struct
 type Community struct {
 	Identifier              string  `json:"identifier"`
 	Name                    string  `json:"name"`
@@ -42,5 +42,3 @@ func (community Community) Categories() ([]Category, error) {
 
 	return res.Results, err
 }
-
-//endregion

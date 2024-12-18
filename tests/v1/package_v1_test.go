@@ -97,8 +97,8 @@ func TestPackageDates(t *testing.T) {
 		t.Error("DateUpdated should be valid and not its zero value.")
 	}
 
-	util.PrettyPrint("Created " + pkg.DateCreated.Humanize())
-	util.PrettyPrint("Updated " + pkg.DateUpdated.Humanize())
+	//util.PrettyPrint("Created " + pkg.DateCreated.Humanize())
+	//util.PrettyPrint("Updated " + pkg.DateUpdated.Humanize())
 }
 
 func TestPackageFilter(t *testing.T) {
@@ -114,11 +114,15 @@ func TestPackageFilter(t *testing.T) {
 func TestDownloadVersion(t *testing.T) {
 	pkg := comm.GetPackage("Owen3H", "CSync")
 	if pkg == nil {
-		t.Fatal(errors.New("error downloading version: package not found"))
+		t.Fatal("error downloading version: package not found")
 	}
 
-	data, _ := pkg.LatestVersion().Download()
-	println(data)
+	_, err := pkg.LatestVersion().Download()
+	if err != nil {
+		t.Fatalf("error downloading version:\n%v", err)
+	}
+
+	//println(data)
 }
 
 func TestPackageFromCommunity(t *testing.T) {
@@ -127,5 +131,5 @@ func TestPackageFromCommunity(t *testing.T) {
 		t.Fatal("package not found in community")
 	}
 
-	util.PrettyPrint(pkg)
+	//util.PrettyPrint(pkg)
 }
