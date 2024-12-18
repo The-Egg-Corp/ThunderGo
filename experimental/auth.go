@@ -11,7 +11,7 @@ type AuthResponse struct {
 	SessionID string  `json:"session_id"`
 }
 
-// TODO: Implement this.
-func LoginWithGithub(auth AuthOptions) (AuthResponse, error) {
-	return AuthResponse{}, nil
-}
+// TODO: Implement this. Edit: forgor why I needed this
+// func LoginWithGithub(auth AuthOptions) (AuthResponse, error) {
+// 	return AuthResponse{}, nil
+// }

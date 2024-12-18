@@ -19,7 +19,6 @@ func (b Base64String) String() string {
 
 func GetCommunities() (CommunityList, error) {
 	res, err := util.JsonGetRequest[CommunitiesResponse]("api/experimental/community")
-
 	if err != nil {
 		return CommunityList{}, err
 	}
@@ -32,7 +31,6 @@ func GetCommunities() (CommunityList, error) {
 // If the name/id does not match any existing community, the result will be nil.
 func GetCommunity(nameOrId string) (*Community, bool, error) {
 	communities, err := GetCommunities()
-
 	if err != nil {
 		return nil, false, err
 	}

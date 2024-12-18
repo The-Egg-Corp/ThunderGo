@@ -26,7 +26,7 @@ func TestValidateIcon(t *testing.T) {
 }
 
 func TestValidateManifest(t *testing.T) {
-	t.Skip()
+	//t.Skip()
 
 	var errs []string
 

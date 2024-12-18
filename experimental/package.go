@@ -22,7 +22,6 @@ type Package struct {
 	Latest         PackageVersion `json:"latest"`
 }
 
-// region PackageVersion Struct
 type PackageVersion struct {
 	Namespace     string        `json:"namespace"`
 	Name          string        `json:"name"`
@@ -53,9 +52,6 @@ func (pkg PackageVersion) getMarkdown(file string) (common.MarkdownResponse, err
 	return util.JsonGetRequest[common.MarkdownResponse](endpoint)
 }
 
-//endregion
-
-// region ReviewStatus Enum
 type ReviewStatus string
 
 const (
@@ -67,8 +63,6 @@ const (
 func (rs ReviewStatus) Unreviewed() bool { return rs == UNREVIEWED }
 func (rs ReviewStatus) Approved() bool   { return rs == APPROVED }
 func (rs ReviewStatus) Rejected() bool   { return rs == REJECTED }
-
-//endregion
 
 type PackageListing struct {
 	HasNsfwContent bool         `json:"has_nsfw_content"`

@@ -35,74 +35,69 @@ type IconValidatorParams struct {
 	ImageData []byte
 }
 
-func NewErr(msg string) error {
-	return errors.New(msg)
-}
+// TODO: Implement this
+// func SubmitPackage(data []byte) (bool, error) {
+// 	return false, nil
+// }
 
 // TODO: Implement this
-func SubmitPackage(data []byte) (bool, error) {
-	return false, nil
-}
+// func ValidateReadme(data []byte) (bool, error) {
+// 	return false, nil
+// }
 
-// TODO: Implement this
-func ValidateReadme(data []byte) (bool, error) {
-	return false, nil
-}
-
-func ValidateManifest(author string, data []byte) (bool, []string, error) {
+func ValidateManifest(author string, data []byte) (valid bool, errs []string, err error) {
 	var manifest ManifestMetadata
-	var errors []string
 
-	err := json.Unmarshal(data, &manifest)
+	err = json.Unmarshal(data, &manifest)
 	if err != nil {
-		return false, nil, NewErr("error deserializing manifest: \n" + err.Error())
+		return false, nil, errors.New("error deserializing manifest: \n" + err.Error())
 	}
 
-	AddIfEmpty(&errors, &manifest.Name, "required property 'name' is empty or unspecified")
-	AddIfInvalid(&errors, &manifest.Name, "property 'name' must contain only valid characters (a-z A-Z 0-9 _)")
-	AddIfEmpty(&errors, &manifest.Description, "required property 'description' is empty or unspecified")
+	AddIfEmpty(&errs, &manifest.Name, "required property 'name' is empty or unspecified")
+	AddIfInvalid(&errs, &manifest.Name, "property 'name' must contain only valid characters (a-z A-Z 0-9 _)")
+	AddIfEmpty(&errs, &manifest.Description, "required property 'description' is empty or unspecified")
 
-	verEmpty := AddIfEmpty(&errors, &manifest.VersionNumber, "required property 'version_number' is empty or unspecified")
+	verEmpty := AddIfEmpty(&errs, &manifest.VersionNumber, "required property 'version_number' is empty or unspecified")
 	if !verEmpty {
-		valid, _ := util.CheckSemVer(manifest.VersionNumber)
-		if valid {
+		matched, _ := util.CheckSemVer(manifest.VersionNumber)
+		if matched {
 			pkg, _ := GetPackage(author, manifest.Name)
 			if pkg != nil {
 				verA, _ := version.NewSemver(manifest.VersionNumber)
 				verB, _ := version.NewSemver(pkg.Latest.VersionNumber)
 
 				if verA.LessThanOrEqual(verB) {
-					Add(&errors, "property 'version_number' must be higher than the latest")
+					Add(&errs, "property 'version_number' must be higher than the latest")
 				}
 			}
 		} else {
-			Add(&errors, "property 'version_number' does not follow semantic versioning (major.minor.patch)")
+			Add(&errs, "property 'version_number' does not follow semantic versioning (major.minor.patch)")
 		}
 	}
 
 	if manifest.WebsiteURL == nil {
-		Add(&errors, "required property 'website_url' is unspecified")
+		Add(&errs, "property 'website_url' is empty or unspecified")
 	} else {
 		url := strings.ToLower(*manifest.WebsiteURL)
 		if !(strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://")) {
-			Add(&errors, "property 'website_url' must be a valid URL")
+			Add(&errs, "property 'website_url' must be a valid URL")
 		}
 	}
 
 	if manifest.Dependencies == nil {
-		Add(&errors, "manifest property 'dependencies' is required")
+		Add(&errs, "required property 'dependencies' is empty or unspecified")
 	} else {
 		for _, dep := range manifest.Dependencies {
 			fullName := author + "-" + manifest.Name
 			if strings.Contains(strings.ToLower(dep), strings.ToLower(fullName)) {
-				Add(&errors, "manifest property 'dependencies' is invalid. cannot depend on self")
+				Add(&errs, "property 'dependencies' is invalid. cannot depend on self")
 			}
 
 			// TODO: Check multiple versions of same package
 		}
 	}
 
-	return len(errors) < 1, errors, nil
+	return len(errs) < 1, errs, nil
 }
 
 // Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
