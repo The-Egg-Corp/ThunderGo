@@ -40,8 +40,8 @@ func PackagesFromCommunities(communities []Community) (PackageList, error) {
 		i := i
 		g.Go(func() error {
 			comm := communities[i]
-			pkgs, err := comm.AllPackages()
 
+			pkgs, err := comm.AllPackages()
 			if err != nil {
 				return err
 			}

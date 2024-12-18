@@ -55,12 +55,7 @@ func ValidateManifest(author string, data []byte) (bool, []string, error) {
 
 	err := json.Unmarshal(data, &manifest)
 	if err != nil {
-		errors = append(errors, err.Error())
-	}
-
-	pkg, _ := GetPackage(author, manifest.Name)
-	if pkg == nil {
-		return false, nil, NewErr("package not found under the specified author")
+		return false, nil, NewErr("error deserializing manifest: \n" + err.Error())
 	}
 
 	AddIfEmpty(&errors, &manifest.Name, "required property 'name' is empty or unspecified")
@@ -69,57 +64,45 @@ func ValidateManifest(author string, data []byte) (bool, []string, error) {
 
 	verEmpty := AddIfEmpty(&errors, &manifest.VersionNumber, "required property 'version_number' is empty or unspecified")
 	if !verEmpty {
-		sv, _ := util.CheckSemVer(manifest.VersionNumber)
-		AddIfFalse(&errors, &sv, "property 'version_number' does not follow semantic versioning (major.minor.patch)")
+		valid, _ := util.CheckSemVer(manifest.VersionNumber)
+		if valid {
+			pkg, _ := GetPackage(author, manifest.Name)
+			if pkg != nil {
+				verA, _ := version.NewSemver(manifest.VersionNumber)
+				verB, _ := version.NewSemver(pkg.Latest.VersionNumber)
 
-		if !sv {
-			return false, errors, nil
-		}
-
-		verA, _ := version.NewSemver(manifest.VersionNumber)
-		verB, _ := version.NewSemver(pkg.Latest.VersionNumber)
-
-		if verA.LessThanOrEqual(verB) {
-			errors = append(errors, "property 'version_number' must be higher than the latest")
+				if verA.LessThanOrEqual(verB) {
+					Add(&errors, "property 'version_number' must be higher than the latest")
+				}
+			}
+		} else {
+			Add(&errors, "property 'version_number' does not follow semantic versioning (major.minor.patch)")
 		}
 	}
 
 	if manifest.WebsiteURL == nil {
-		errors = append(errors, "required property 'website_url' is unspecified")
+		Add(&errors, "required property 'website_url' is unspecified")
 	} else {
 		url := strings.ToLower(*manifest.WebsiteURL)
 		if !(strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://")) {
-			errors = append(errors, "property 'website_url' must be a valid URL")
+			Add(&errors, "property 'website_url' must be a valid URL")
 		}
 	}
 
 	if manifest.Dependencies == nil {
-		errors = append(errors, "manifest property 'dependencies' is required")
+		Add(&errors, "manifest property 'dependencies' is required")
+	} else {
+		for _, dep := range manifest.Dependencies {
+			fullName := author + "-" + manifest.Name
+			if strings.Contains(strings.ToLower(dep), strings.ToLower(fullName)) {
+				Add(&errors, "manifest property 'dependencies' is invalid. cannot depend on self")
+			}
+
+			// Check multiple versions of same package
+		}
 	}
 
 	return len(errors) < 1, errors, nil
-}
-
-func AddIfEmpty(arr *[]string, str *string, errStr string) bool {
-	empty := *str == "" || str == nil
-	if empty {
-		*arr = append(*arr, errStr)
-	}
-
-	return empty
-}
-
-func AddIfFalse(arr *[]string, val *bool, errStr string) {
-	if !*val {
-		*arr = append(*arr, errStr)
-	}
-}
-
-func AddIfInvalid(arr *[]string, str *string, errStr string) {
-	matched, _ := regexp.MatchString(`^[a-zA-Z0-9_]+$`, *str)
-	if !matched {
-		*arr = append(*arr, errStr)
-	}
 }
 
 // Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
@@ -145,4 +128,24 @@ func ValidateIcon(params IconValidatorParams) (bool, error) {
 	}
 
 	return false, errors.New("image dimensions did not match: 256x256")
+}
+
+func Add(arr *[]string, errStr string) {
+	*arr = append(*arr, errStr)
+}
+
+func AddIfEmpty(arr *[]string, str *string, errStr string) bool {
+	empty := *str == "" || str == nil
+	if empty {
+		Add(arr, errStr)
+	}
+
+	return empty
+}
+
+func AddIfInvalid(arr *[]string, str *string, errStr string) {
+	matched, _ := regexp.MatchString(`^[a-zA-Z0-9_]+$`, *str)
+	if !matched {
+		Add(arr, errStr)
+	}
 }
