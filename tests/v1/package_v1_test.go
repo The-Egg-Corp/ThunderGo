@@ -122,7 +122,6 @@ func TestDownloadVersion(t *testing.T) {
 		t.Fatalf("error downloading version:\n%v", err)
 	}
 
-	//println(data)
 }
 
 func TestPackageFromCommunity(t *testing.T) {
@@ -130,6 +129,4 @@ func TestPackageFromCommunity(t *testing.T) {
 	if pkg == nil {
 		t.Fatal("package not found in community")
 	}
-
-	//util.PrettyPrint(pkg)
 }
