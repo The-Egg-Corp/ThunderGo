@@ -98,7 +98,7 @@ func ValidateManifest(author string, data []byte) (bool, []string, error) {
 				Add(&errors, "manifest property 'dependencies' is invalid. cannot depend on self")
 			}
 
-			// Check multiple versions of same package
+			// TODO: Check multiple versions of same package
 		}
 	}
 
@@ -109,6 +109,7 @@ func ValidateManifest(author string, data []byte) (bool, []string, error) {
 //
 // Additionally, if the file name is specified, it will validate that it is named correctly.
 func ValidateIcon(params IconValidatorParams) (bool, error) {
+	// TODO: Why doesn't this work? "icon.png.jpg" should not work!
 	if params.FileName != "" && params.FileName != "icon.png" {
 		return false, errors.New("image name provided did not match: icon.png")
 	}
