@@ -4,14 +4,19 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"image"
 	_ "image/png"
 	"regexp"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/hashicorp/go-version"
 	"github.com/the-egg-corp/thundergo/util"
 )
+
+const MAX_MARKDOWN_SIZE = 1000 * 100
+const MAX_ICON_SIZE = 1024 * 1024 * 6
 
 type PackageSubmissionMetadata struct {
 	UUID                string   `json:"upload_uuid"`
@@ -30,15 +35,28 @@ type ManifestMetadata struct {
 	Dependencies  []string `json:"dependencies"`
 }
 
-// TODO: Implement this
+// TODO: Implement this. Should take an auth key which the user gathers from 'Service Accounts'
 // func SubmitPackage(data []byte) (bool, error) {
 // 	return false, nil
 // }
 
-// TODO: Implement this
-// func ValidateReadme(data []byte) (bool, error) {
-// 	return false, nil
-// }
+func ValidateReadme(data []byte) (bool, error) {
+	if !utf8.Valid(data) {
+		return false, errors.New("error parsing readme: file is not UTF-8 compatible")
+	}
+
+	bom := []byte{0xEF, 0xBB, 0xBF}
+	if bytes.HasPrefix(data, bom) {
+		return false, fmt.Errorf("readme cannot begin with a UTF-8 BOM")
+	}
+
+	str := string(data)
+	if len(str) > MAX_MARKDOWN_SIZE {
+		return false, fmt.Errorf("readme is too large: max file size is 100kb")
+	}
+
+	return true, nil
+}
 
 func ValidateManifest(author string, data []byte) (valid bool, errs []string, err error) {
 	var manifest ManifestMetadata
@@ -95,29 +113,38 @@ func ValidateManifest(author string, data []byte) (valid bool, errs []string, er
 	return len(errs) < 1, errs, nil
 }
 
-// Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
+// Decodes image data and validates that the image passes the following requirements:
 //
-// Additionally, if the file name is specified, it will validate that it is named correctly.
+// - Max file size does not exceed 6MB.
+//
+// - Is in the PNG format.
+//
+// - Dimensions match 256x256.
 func ValidateIcon(fileName string, data []byte) (bool, error) {
-	if fileName != "" && fileName != "icon.png" {
-		return false, errors.New("image name provided did not match: icon.png")
+	// Check bytes dont exceed
+	if len(data) > MAX_ICON_SIZE {
+		return false, errors.New("invalid icon: max file size is 6MB")
 	}
 
 	// Decode data into the Image type.
-	img, _, err := image.Decode(bytes.NewReader(data))
+	img, format, err := image.Decode(bytes.NewReader(data))
 	if err != nil {
 		return false, err
+	}
+
+	if format != "png" {
+		return false, errors.New("invalid icon: must be in PNG format")
 	}
 
 	bounds := img.Bounds()
 	width, height := bounds.Dx(), bounds.Dy()
 
 	// Verify dimensions
-	if width == 256 && height == 256 {
-		return true, nil
+	if width != 256 && height != 256 {
+		return false, errors.New("invalid icon: dimensions must match 256x256")
 	}
 
-	return false, errors.New("image dimensions did not match: 256x256")
+	return true, nil
 }
 
 func Add(arr *[]string, errStr string) {
