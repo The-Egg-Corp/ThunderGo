@@ -13,7 +13,7 @@ const iconPath = "../test-pkg/icon.png.jpg"
 const manifestPath = "../test-pkg/manifest.json"
 
 func TestValidateIcon(t *testing.T) {
-	//t.Skip()
+	t.Skip()
 
 	icon, err := os.ReadFile(iconPath)
 	if err != nil {

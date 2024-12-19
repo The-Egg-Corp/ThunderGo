@@ -22,11 +22,6 @@ type Package struct {
 	Latest         PackageVersion `json:"latest"`
 }
 
-type PackageCategory struct {
-	Name string `json:"name"`
-	Slug string `json:"slug"`
-}
-
 type PackageVersion struct {
 	Namespace     string        `json:"namespace"`
 	Name          string        `json:"name"`

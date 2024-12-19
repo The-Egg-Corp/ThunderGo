@@ -12,6 +12,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/hashicorp/go-version"
+	"github.com/the-egg-corp/thundergo/common"
 	"github.com/the-egg-corp/thundergo/util"
 )
 
@@ -38,9 +39,9 @@ type PackageSubmissionMetadata struct {
 }
 
 type AvailableCommunity struct {
-	Community  Community         `json:"community"`
-	Categories []PackageCategory `json:"categories"`
-	URL        string            `json:"url"`
+	Community  Community                `json:"community"`
+	Categories []common.PackageCategory `json:"categories"`
+	URL        string                   `json:"url"`
 }
 
 type PackageSubmissionResult struct {
