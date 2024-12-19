@@ -3,21 +3,25 @@ package tests
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
 	"github.com/the-egg-corp/thundergo/util"
 )
 
-func TestValidateIcon(t *testing.T) {
-	t.Skip()
+const iconPath = "../test-pkg/icon.png.jpg"
+const manifestPath = "../test-pkg/manifest.json"
 
-	icon, err := os.ReadFile("../test-pkg/icon.png.jpg")
+func TestValidateIcon(t *testing.T) {
+	//t.Skip()
+
+	icon, err := os.ReadFile(iconPath)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	valid, err := TSGO.ValidateIcon(TSGO.IconValidatorParams{ImageData: icon})
+	valid, err := TSGO.ValidateIcon(filepath.Base(iconPath), icon)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
@@ -26,11 +30,11 @@ func TestValidateIcon(t *testing.T) {
 }
 
 func TestValidateManifest(t *testing.T) {
-	//t.Skip()
+	t.Skip()
 
 	var errs []string
 
-	data, err := os.ReadFile("../test-pkg/manifest.json")
+	data, err := os.ReadFile(manifestPath)
 	if err != nil {
 		t.Fatal(err.Error())
 	}

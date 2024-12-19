@@ -30,11 +30,6 @@ type ManifestMetadata struct {
 	Dependencies  []string `json:"dependencies"`
 }
 
-type IconValidatorParams struct {
-	FileName  string
-	ImageData []byte
-}
-
 // TODO: Implement this
 // func SubmitPackage(data []byte) (bool, error) {
 // 	return false, nil
@@ -103,14 +98,13 @@ func ValidateManifest(author string, data []byte) (valid bool, errs []string, er
 // Decodes image data and validates that the image is a PNG and the dimensions are 256x256.
 //
 // Additionally, if the file name is specified, it will validate that it is named correctly.
-func ValidateIcon(params IconValidatorParams) (bool, error) {
-	// TODO: Why doesn't this work? "icon.png.jpg" should not work!
-	if params.FileName != "" && params.FileName != "icon.png" {
+func ValidateIcon(fileName string, data []byte) (bool, error) {
+	if fileName != "" && fileName != "icon.png" {
 		return false, errors.New("image name provided did not match: icon.png")
 	}
 
 	// Decode data into the Image type.
-	img, _, err := image.Decode(bytes.NewReader(params.ImageData))
+	img, _, err := image.Decode(bytes.NewReader(data))
 	if err != nil {
 		return false, err
 	}
