@@ -15,8 +15,18 @@ import (
 	"github.com/the-egg-corp/thundergo/util"
 )
 
+const SUBMIT_ENDPOINT = "api/experimental/submission/submit"
+
 const MAX_MARKDOWN_SIZE = 1000 * 100
 const MAX_ICON_SIZE = 1024 * 1024 * 6
+
+type ManifestMetadata struct {
+	Name          string   `json:"name"`
+	VersionNumber string   `json:"version_number"`
+	WebsiteURL    *string  `json:"website_url"`
+	Description   string   `json:"description"`
+	Dependencies  []string `json:"dependencies"`
+}
 
 type PackageSubmissionMetadata struct {
 	UUID                string   `json:"upload_uuid"`
@@ -27,18 +37,28 @@ type PackageSubmissionMetadata struct {
 	HasNsfwContent      bool     `json:"has_nsfw_content"`
 }
 
-type ManifestMetadata struct {
-	Name          string   `json:"name"`
-	VersionNumber string   `json:"version_number"`
-	WebsiteURL    *string  `json:"website_url"`
-	Description   string   `json:"description"`
-	Dependencies  []string `json:"dependencies"`
+type AvailableCommunity struct {
+	Community  Community         `json:"community"`
+	Categories []PackageCategory `json:"categories"`
+	URL        string            `json:"url"`
 }
 
-// TODO: Implement this. Should take an auth key which the user gathers from 'Service Accounts'
-// func SubmitPackage(data []byte) (bool, error) {
-// 	return false, nil
-// }
+type PackageSubmissionResult struct {
+	PackageVersion       PackageVersion       `json:"package_version"`
+	AvailableCommunities []AvailableCommunity `json:"available_communities"`
+}
+
+// Submits a package to Thunderstore given the zip file as bytes.
+//
+// An API key can be gathered via Settings -> Service Accounts. It is up to you to store and pass it safely.
+func SubmitPackage(authKey string, metadata PackageSubmissionMetadata) (*PackageSubmissionResult, error) {
+	res, err := util.JsonPostRequest[PackageSubmissionMetadata, PackageSubmissionResult](SUBMIT_ENDPOINT, metadata)
+	if err != nil {
+		return nil, errors.New("error sending submission:\n" + err.Error())
+	}
+
+	return &res, nil
+}
 
 func ValidateReadme(data []byte) (bool, error) {
 	if !utf8.Valid(data) {
@@ -120,7 +140,7 @@ func ValidateManifest(author string, data []byte) (valid bool, errs []string, er
 // - Is in the PNG format.
 //
 // - Dimensions match 256x256.
-func ValidateIcon(fileName string, data []byte) (bool, error) {
+func ValidateIcon(data []byte) (bool, error) {
 	// Check bytes dont exceed
 	if len(data) > MAX_ICON_SIZE {
 		return false, errors.New("invalid icon: max file size is 6MB")

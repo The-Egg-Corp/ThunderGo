@@ -3,7 +3,6 @@ package tests
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"testing"
 
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
@@ -21,7 +20,7 @@ func TestValidateIcon(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	valid, err := TSGO.ValidateIcon(filepath.Base(iconPath), icon)
+	valid, err := TSGO.ValidateIcon(icon)
 	if err != nil {
 		t.Fatal(err.Error())
 	}

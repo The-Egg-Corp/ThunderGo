@@ -63,10 +63,10 @@ func asJSON[T interface{}](res []byte, err error) (T, error) {
 	return data, nil
 }
 
-func JsonGetRequest[T interface{}](endpoint string) (T, error) {
-	return asJSON[T](Get(DOMAIN+endpoint, "application/json"))
+func JsonGetRequest[Response interface{}](endpoint string) (Response, error) {
+	return asJSON[Response](Get(DOMAIN+endpoint, "application/json"))
 }
 
-func JsonPostRequest[T interface{}](endpoint string, body any) (T, error) {
-	return asJSON[T](Post(DOMAIN+endpoint, "application/json", body))
+func JsonPostRequest[Body interface{}, Response interface{}](endpoint string, body Body) (Response, error) {
+	return asJSON[Response](Post(DOMAIN+endpoint, "application/json", body))
 }
