@@ -6,10 +6,10 @@ import (
 	"testing"
 
 	TSGO "github.com/the-egg-corp/thundergo/experimental"
-	"github.com/the-egg-corp/thundergo/util"
 )
 
 const iconPath = "../test-pkg/icon.png.jpg"
+const readmePath = "../test-pkg/README.md"
 const manifestPath = "../test-pkg/manifest.json"
 
 func TestValidateIcon(t *testing.T) {
@@ -25,13 +25,37 @@ func TestValidateIcon(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	util.PrettyPrint(valid)
+	fmt.Println(valid)
+}
+
+func TestValidateReadme(t *testing.T) {
+	t.Skip()
+
+	data, err := os.ReadFile(readmePath)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	valid, errs, err := TSGO.ValidateReadme(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	fmt.Println("Valid: ", valid)
+
+	if len(errs) > 0 {
+		fmt.Println(errs)
+
+		if valid {
+			t.Fatal("errors were returned, but readme is still valid")
+		}
+
+		return
+	}
 }
 
 func TestValidateManifest(t *testing.T) {
 	t.Skip()
-
-	var errs []string
 
 	data, err := os.ReadFile(manifestPath)
 	if err != nil {
@@ -40,13 +64,13 @@ func TestValidateManifest(t *testing.T) {
 
 	valid, errs, err := TSGO.ValidateManifest("Owen3H", data)
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
 	}
 
 	fmt.Println("Valid: ", valid)
 
 	if len(errs) > 0 {
-		util.PrettyPrint(errs)
+		fmt.Println(errs)
 
 		if valid {
 			t.Fatal("errors were returned, but manifest is still valid")

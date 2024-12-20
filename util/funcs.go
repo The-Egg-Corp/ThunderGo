@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"reflect"
 	"regexp"
 	"strings"
@@ -81,4 +82,20 @@ func CheckSemVer(version string) (bool, error) {
 	)
 
 	return lo.Ternary(err == nil, matched, false), lo.Ternary(err == nil, nil, err)
+}
+
+// Yoinked from: https://yourbasic.org/golang/formatting-byte-size-to-human-readable-format/
+func PrettyByteSize(amt int64) string {
+	const unit = 1000
+	if amt < unit {
+		return fmt.Sprintf("%d B", amt)
+	}
+
+	div, exp := int64(unit), 0
+	for n := amt / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+
+	return fmt.Sprintf("%.0f %cB", float64(amt)/float64(div), "kMGTPE"[exp])
 }

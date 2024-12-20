@@ -61,25 +61,45 @@ func SubmitPackage(authKey string, metadata PackageSubmissionMetadata) (*Package
 	return &res, nil
 }
 
-func ValidateReadme(data []byte) (bool, error) {
+// Simply checks the input data is valid markdown and doesn't exceed the max size.
+//
+// To this method does NOT call the API but rather simulates what it would do, avoiding an unnecessary call.
+func ValidateReadme(data []byte) (valid bool, errs []error, err error) {
 	if !utf8.Valid(data) {
-		return false, errors.New("error parsing readme: file is not UTF-8 compatible")
+		Add(&errs, "error parsing readme: file is not UTF-8 compatible")
 	}
 
 	bom := []byte{0xEF, 0xBB, 0xBF}
 	if bytes.HasPrefix(data, bom) {
-		return false, fmt.Errorf("readme cannot begin with a UTF-8 BOM")
+		Add(&errs, "readme cannot begin with a UTF-8 BOM")
 	}
 
 	str := string(data)
 	if len(str) > MAX_MARKDOWN_SIZE {
-		return false, fmt.Errorf("readme is too large: max file size is 100kb")
+		Add(&errs, fmt.Sprintf("readme is too large: max file size is %v", util.PrettyByteSize(MAX_MARKDOWN_SIZE)))
 	}
 
-	return true, nil
+	return true, errs, nil
 }
 
-func ValidateManifest(author string, data []byte) (valid bool, errs []string, err error) {
+// Unmarshals the data into ManifestMetadata and checks all properties pass their requirements,
+// reporting any that fail to the resulting 'errs' variable. The last variable 'err' indicates whether
+// the unmarshal failed, before any properties are able to be checked.
+//
+// To this method does NOT call the API but rather simulates what it would do, avoiding an unnecessary call.
+//
+// # Example usage:
+//
+//	valid, errs, err := ValidateManifest("Owen3H", manifestData)
+//	if err != nil {
+//	  fmt.Println(err)
+//	  return
+//	}
+//
+//	if !valid {
+//	  fmt.Println(errs)
+//	}
+func ValidateManifest(author string, data []byte) (valid bool, errs []error, err error) {
 	var manifest ManifestMetadata
 
 	err = json.Unmarshal(data, &manifest)
@@ -168,11 +188,11 @@ func ValidateIcon(data []byte) (bool, error) {
 	return true, nil
 }
 
-func Add(arr *[]string, errStr string) {
-	*arr = append(*arr, errStr)
+func Add(arr *[]error, errStr string) {
+	*arr = append(*arr, errors.New(errStr))
 }
 
-func AddIfEmpty(arr *[]string, str *string, errStr string) bool {
+func AddIfEmpty(arr *[]error, str *string, errStr string) bool {
 	empty := *str == "" || str == nil
 	if empty {
 		Add(arr, errStr)
@@ -181,9 +201,11 @@ func AddIfEmpty(arr *[]string, str *string, errStr string) bool {
 	return empty
 }
 
-func AddIfInvalid(arr *[]string, str *string, errStr string) {
+func AddIfInvalid(arr *[]error, str *string, errStr string) bool {
 	matched, _ := regexp.MatchString(`^[a-zA-Z0-9_]+$`, *str)
 	if !matched {
 		Add(arr, errStr)
 	}
+
+	return matched
 }
