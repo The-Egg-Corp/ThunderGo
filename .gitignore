@@ -11,4 +11,6 @@
 # Go workspace file
 go.work
 
+# Custom
+.env
 test-pkg

@@ -12,7 +12,7 @@ import (
 	"github.com/sanity-io/litter"
 )
 
-// An alias for [time.Time] that is correctly unmarshalled from JSON.
+// An alias for [time.Time] that gets correctly JSON unmarshalled.
 type DateTime struct {
 	time.Time
 }
