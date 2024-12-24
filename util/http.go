@@ -3,7 +3,6 @@ package util
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -17,10 +16,25 @@ const DOMAIN = "https://thunderstore.io/"
 
 var client = resty.NewWithClient(&http.Client{Timeout: REQ_TIMEOUT})
 
-func Post(url string, contentType string, body any) ([]byte, error) {
+func Get(url string, contentType string) (*[]byte, *int, error) {
+	response, err := client.R().
+		SetHeader("Content-Type", contentType).
+		Get(url)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resBody := response.Body()
+	statusCode := response.StatusCode()
+
+	return &resBody, &statusCode, nil
+}
+
+func Post(url string, contentType string, body any) (*[]byte, *int, error) {
 	data, err := json.Marshal(&body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	// req, _ := http.NewRequest("POST", url, bytes.NewReader(data))
@@ -33,40 +47,36 @@ func Post(url string, contentType string, body any) ([]byte, error) {
 		Post(url)
 
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	fmt.Println(response.StatusCode())
-	return response.Body(), nil
+	resBody := response.Body()
+	statusCode := response.StatusCode()
+
+	return &resBody, &statusCode, nil
 }
 
-func Get(url string, contentType string) ([]byte, error) {
-	response, err := client.R().
-		SetHeader("Content-Type", contentType).
-		Get(url)
+func JsonGetRequest[Expected interface{}](endpoint string) (*Expected, *int, error) {
+	resBody, code, err := Get(DOMAIN+endpoint, "application/json")
+	return fromJSON[Expected](resBody), code, err
+}
 
+func JsonPostRequest[Expected interface{}, Body interface{}](endpoint string, body Body) (*Expected, *int, error) {
+	resBody, code, err := Post(DOMAIN+endpoint, "application/json", body)
+	return fromJSON[Expected](resBody), code, err
+}
+
+func fromJSON[T interface{}](data *[]byte) *T {
+	if data == nil {
+		return nil
+	}
+
+	var val T
+
+	err := json.Unmarshal([]byte(*data), &val)
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
-	return response.Body(), nil
-}
-
-func asJSON[T interface{}](res []byte, err error) (T, error) {
-	var data T
-
-	if err != nil {
-		return data, err
-	}
-
-	json.Unmarshal([]byte(res), &data)
-	return data, nil
-}
-
-func JsonGetRequest[Response interface{}](endpoint string) (Response, error) {
-	return asJSON[Response](Get(DOMAIN+endpoint, "application/json"))
-}
-
-func JsonPostRequest[Body interface{}, Response interface{}](endpoint string, body Body) (Response, error) {
-	return asJSON[Response](Post(DOMAIN+endpoint, "application/json", body))
+	return &val
 }

@@ -7,6 +7,18 @@ import (
 	"github.com/the-egg-corp/thundergo/util"
 )
 
+type ReviewStatus string
+
+const (
+	UNREVIEWED ReviewStatus = "unreviewed"
+	APPROVED   ReviewStatus = "approved"
+	REJECTED   ReviewStatus = "rejected"
+)
+
+func (rs ReviewStatus) Unreviewed() bool { return rs == UNREVIEWED }
+func (rs ReviewStatus) Approved() bool   { return rs == APPROVED }
+func (rs ReviewStatus) Rejected() bool   { return rs == REJECTED }
+
 type Package struct {
 	Namespace      string         `json:"namespace"`
 	Name           string         `json:"name"`
@@ -20,6 +32,10 @@ type Package struct {
 	Deprecated     bool           `json:"is_deprecated"`
 	TotalDownloads string         `json:"total_downloads"`
 	Latest         PackageVersion `json:"latest"`
+}
+
+func (pkg Package) Wiki() (*Wiki, *int, error) {
+	return GetWiki(pkg.Namespace, pkg.Name)
 }
 
 type PackageVersion struct {
@@ -37,32 +53,28 @@ type PackageVersion struct {
 	Active        bool          `json:"is_active"`
 }
 
-func (pkg PackageVersion) Changelog() (string, error) {
-	res, err := pkg.getMarkdown("/changelog")
-	return res.Markdown, err
+func (pkg PackageVersion) Changelog() (*string, error) {
+	res, _, err := pkg.getMarkdown("changelog")
+	if res == nil {
+		return nil, err
+	}
+
+	return &res.Markdown, err
 }
 
-func (pkg PackageVersion) Readme() (string, error) {
-	res, err := pkg.getMarkdown("/readme")
-	return res.Markdown, err
+func (pkg PackageVersion) Readme() (*string, error) {
+	res, _, err := pkg.getMarkdown("readme")
+	if res == nil {
+		return nil, err
+	}
+
+	return &res.Markdown, err
 }
 
-func (pkg PackageVersion) getMarkdown(file string) (common.MarkdownResponse, error) {
-	endpoint := fmt.Sprint("api/experimental/package/", pkg.Namespace, "/", pkg.Name, "/", pkg.VersionNumber, file)
+func (pkg PackageVersion) getMarkdown(file string) (*common.MarkdownResponse, *int, error) {
+	endpoint := fmt.Sprintf("api/experimental/package/%s/%s/%s/%s", pkg.Namespace, pkg.Name, pkg.VersionNumber, file)
 	return util.JsonGetRequest[common.MarkdownResponse](endpoint)
 }
-
-type ReviewStatus string
-
-const (
-	UNREVIEWED ReviewStatus = "unreviewed"
-	APPROVED   ReviewStatus = "approved"
-	REJECTED   ReviewStatus = "rejected"
-)
-
-func (rs ReviewStatus) Unreviewed() bool { return rs == UNREVIEWED }
-func (rs ReviewStatus) Approved() bool   { return rs == APPROVED }
-func (rs ReviewStatus) Rejected() bool   { return rs == REJECTED }
 
 type PackageListing struct {
 	HasNsfwContent bool         `json:"has_nsfw_content"`

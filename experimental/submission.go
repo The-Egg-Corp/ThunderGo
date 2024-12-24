@@ -53,12 +53,12 @@ type PackageSubmissionResult struct {
 //
 // An API key can be gathered via Settings -> Service Accounts. It is up to you to store and pass it safely.
 func SubmitPackage(authKey string, metadata PackageSubmissionMetadata) (*PackageSubmissionResult, error) {
-	res, err := util.JsonPostRequest[PackageSubmissionMetadata, PackageSubmissionResult](SUBMIT_ENDPOINT, metadata)
+	res, _, err := util.JsonPostRequest[PackageSubmissionResult, PackageSubmissionMetadata](SUBMIT_ENDPOINT, metadata)
 	if err != nil {
 		return nil, errors.New("error sending submission:\n" + err.Error())
 	}
 
-	return &res, nil
+	return res, nil
 }
 
 // Simply checks the input data is valid markdown and doesn't exceed the max size.

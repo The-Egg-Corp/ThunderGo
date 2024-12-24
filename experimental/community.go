@@ -38,7 +38,11 @@ type Community struct {
 
 func (community Community) Categories() ([]Category, error) {
 	endpoint := fmt.Sprint("api/experimental/community/", community.Identifier, "/category")
-	res, err := util.JsonGetRequest[CommunityCategories](endpoint)
+	res, _, err := util.JsonGetRequest[CommunityCategories](endpoint)
+
+	if res == nil {
+		return nil, err
+	}
 
 	return res.Results, err
 }

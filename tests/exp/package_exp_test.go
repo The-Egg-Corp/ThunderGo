@@ -7,7 +7,7 @@ import (
 	TSGOExp "github.com/the-egg-corp/thundergo/experimental"
 )
 
-func TestPackageExp(t *testing.T) {
+func TestGetPackage(t *testing.T) {
 	var err error
 	pkg, err := TSGOExp.GetPackage("Owen3H", "CSync")
 

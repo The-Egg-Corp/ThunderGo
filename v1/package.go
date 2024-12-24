@@ -8,6 +8,13 @@ import (
 	"github.com/the-egg-corp/thundergo/util"
 )
 
+type RatingState string
+
+const (
+	RATED   RatingState = "rated"
+	UNRATED RatingState = "unrated"
+)
+
 //var pkgCache PackageList
 
 // An alias for a [Package] array with helper functions attached.
@@ -142,7 +149,17 @@ func (pkg Package) GetVersion(verNumber string) *PackageVersion {
 // Gets this package's statistics such as downloads and likes.
 func (pkg Package) Metrics(version ...string) (PackageMetrics, error) {
 	endpoint := fmt.Sprint("api/v1/package-metrics/", pkg.Owner, "/", pkg.Name)
-	return util.JsonGetRequest[PackageMetrics](endpoint)
+	res, _, err := util.JsonGetRequest[PackageMetrics](endpoint)
+
+	return *res, err
+}
+
+func (pkg Package) Rate() (*PackageListing, error) {
+	return RatePackage(pkg.UUID, RATED)
+}
+
+func (pkg Package) Unrate() (*PackageListing, error) {
+	return RatePackage(pkg.UUID, UNRATED)
 }
 
 // A specific version of a package.
@@ -165,7 +182,8 @@ type PackageVersion struct {
 }
 
 func (ver PackageVersion) Download() ([]byte, error) {
-	return util.Get(ver.DownloadURL, "application/zip")
+	res, _, err := util.Get(ver.DownloadURL, "application/zip")
+	return *res, err
 }
 
 // type PackageVersion struct {
@@ -194,4 +212,21 @@ type PackageMetrics struct {
 
 type PackageVersionMetrics struct {
 	Downloads uint32 `json:"downloads"`
+}
+
+type PackageListing struct {
+	Name           string
+	FullName       string
+	Owner          string
+	PackageURL     string
+	DonationLink   string
+	DateCreated    string
+	DateUpdated    string
+	UUID           string
+	RatingScore    string
+	Pinned         string
+	Deprecated     string
+	HasNsfwContent bool
+	Categories     string
+	Versions       string
 }

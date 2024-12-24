@@ -130,3 +130,14 @@ func TestPackageFromCommunity(t *testing.T) {
 		t.Fatal("package not found in community")
 	}
 }
+
+func TestRatePackage(t *testing.T) {
+	pkg := comm.GetPackage("Owen3H", "CSync")
+
+	listing, err := pkg.Rate()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	util.PrettyPrint(listing)
+}

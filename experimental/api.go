@@ -2,7 +2,6 @@ package experimental
 
 import (
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -18,7 +17,7 @@ func (b Base64String) String() string {
 }
 
 func GetCommunities() (CommunityList, error) {
-	res, err := util.JsonGetRequest[CommunitiesResponse]("api/experimental/community")
+	res, _, err := util.JsonGetRequest[CommunitiesResponse]("api/experimental/community")
 	if err != nil {
 		return CommunityList{}, err
 	}
@@ -49,14 +48,18 @@ func GetCommunity(nameOrId string) (*Community, bool, error) {
 // Get a single [Package] given it's owner and package short name. Both are case-sensitive!
 //
 // If an error occurred or it was not found, the result will be nil.
-func GetPackage(author string, name string) (*Package, error) {
+func GetPackage(author, name string) (*Package, error) {
 	endpoint := fmt.Sprintf("api/experimental/package/%s/%s", author, name)
-	pkg, err := util.JsonGetRequest[Package](endpoint)
 
-	// Zero value, couldn't find package.
-	if util.Zero(pkg) {
-		return nil, errors.New("package not found. ensure case-sensitive parameters are correct")
+	pkg, code, err := util.JsonGetRequest[Package](endpoint)
+	if code == nil {
+		return nil, err
 	}
 
-	return &pkg, err
+	// Zero value, couldn't find package.
+	if *code == 404 {
+		return nil, fmt.Errorf("package '%s-%s' not found. ensure case-sensitive parameters are correct\n\nError:\n%v", author, name, err)
+	}
+
+	return pkg, err
 }
