@@ -132,6 +132,8 @@ func TestPackageFromCommunity(t *testing.T) {
 }
 
 func TestRatePackage(t *testing.T) {
+	t.Skip() // Need to sort out auth before enabling this test.
+
 	pkg := comm.GetPackage("Owen3H", "CSync")
 
 	listing, err := pkg.Rate()
