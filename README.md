@@ -36,7 +36,7 @@ Visit the [wiki](https://github.com/the-egg-corp/thundergo/wiki) for the full do
 ### V1 
 ```go
 var comm = TSGOV1.Community{
-	Identifier: "lethal-company",
+    Identifier: "lethal-company",
 }
 
 func main() {
