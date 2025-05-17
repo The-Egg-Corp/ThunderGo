@@ -3,21 +3,45 @@ package tests
 import (
 	"errors"
 	"fmt"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/the-egg-corp/thundergo/util"
 	TSGOV1 "github.com/the-egg-corp/thundergo/v1"
 )
 
-var comm = TSGOV1.Community{
-	Identifier: "lethal-company",
+var comm = TSGOV1.Community{Identifier: "lethal-company"}
+var commPkgs TSGOV1.PackageList
+
+func TestMain(m *testing.M) {
+	err := setup()
+	if err != nil {
+		log.Fatal(errors.New("failed to get community packages. cannot use empty slice"))
+		return
+	}
+
+	os.Exit(m.Run())
+}
+
+func setup() error {
+	pkgs, err := comm.AllPackages()
+	if err != nil {
+		return errors.New("failed to get community packages.\n" + err.Error())
+	}
+
+	if pkgs.Size() < 1 {
+		return errors.New("failed to get community packages. cannot use empty slice")
+	}
+
+	return nil
 }
 
 func TestPackagesFromList(t *testing.T) {
 	var err error
 	var pkgs TSGOV1.PackageList
 
-	pkgs, err = TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList("riskofrain2", "valheim"))
+	pkgs, err = TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList("subnautica", "valheim"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,6 +51,7 @@ func TestPackagesFromList(t *testing.T) {
 
 func TestCommunityPackages(t *testing.T) {
 	pkgs, _ := comm.AllPackages()
+
 	// pkgs = pkgs.Filter(func(pkg TSGOV1.Package) bool {
 	// 	return pkg.Owner == "Owen3H"
 	// })
@@ -35,24 +60,19 @@ func TestCommunityPackages(t *testing.T) {
 }
 
 func TestPackageGetMethods(t *testing.T) {
-	pkgs, err := comm.AllPackages()
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	var pkg *TSGOV1.Package
 
-	pkg = pkgs.GetExact("Owen3H-CSync")
+	pkg = commPkgs.GetExact("Owen3H-CSync")
 	if pkg == nil {
 		t.Fatal(errors.New("could not get package by its full name"))
 	}
 
-	pkg = pkgs.GetByUUID("13d217b1-1e90-431a-a826-cd29c9eaea36")
+	pkg = commPkgs.GetByUUID("13d217b1-1e90-431a-a826-cd29c9eaea36")
 	if pkg == nil {
 		t.Fatal(errors.New("could not get package using UUID"))
 	}
 
-	pkg = pkgs.Get("Owen3H", "CSync")
+	pkg = commPkgs.Get("Owen3H", "CSync")
 	if pkg == nil {
 		t.Fatal(errors.New("could not get package given the name and author"))
 	}
@@ -82,12 +102,7 @@ func TestMetrics(t *testing.T) {
 }
 
 func TestPackageDates(t *testing.T) {
-	pkgs, err := comm.AllPackages()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	pkg := pkgs.Get("Owen3H", "CSync")
+	pkg := commPkgs.Get("Owen3H", "CSync")
 
 	if pkg.DateCreated.IsZero() {
 		t.Error("DateCreated should be valid and not its zero value.")
@@ -102,16 +117,15 @@ func TestPackageDates(t *testing.T) {
 }
 
 func TestPackageFilter(t *testing.T) {
-	pkgs, err := comm.AllPackages()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	filtered := pkgs.ExcludeCategories("modpack", "modpacks")
+	filtered := commPkgs.ExcludeCategories("modpack", "modpacks")
 	fmt.Println(filtered.Size())
 }
 
 func TestDownloadVersion(t *testing.T) {
+	if os.Getenv("GITHUB_ACTIONS") == "true" {
+		t.Skip()
+	}
+
 	pkg := comm.GetPackage("Owen3H", "CSync")
 	if pkg == nil {
 		t.Fatal("error downloading version: package not found")

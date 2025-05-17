@@ -23,8 +23,8 @@ func NewCommunityList(identifiers ...string) (list CommunityList) {
 // Returns a list of all packages (mods) within this community.
 func (comm Community) AllPackages(predicate ...func(item Package, index int) bool) (PackageList, error) {
 	endpoint := fmt.Sprint("c/", comm.Identifier, "/api/v1/package")
-	pkgs, _, err := util.JsonGetRequest[PackageList](endpoint)
 
+	pkgs, _, err := util.JsonGetRequest[PackageList](endpoint)
 	if err != nil {
 		return nil, err
 	}
