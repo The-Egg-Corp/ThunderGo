@@ -38,10 +38,7 @@ func setup() error {
 }
 
 func TestPackagesFromList(t *testing.T) {
-	var err error
-	var pkgs TSGOV1.PackageList
-
-	pkgs, err = TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList("subnautica", "valheim"))
+	pkgs, err := TSGOV1.PackagesFromCommunities(TSGOV1.NewCommunityList("subnautica", "valheim"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,9 +57,7 @@ func TestCommunityPackages(t *testing.T) {
 }
 
 func TestPackageGetMethods(t *testing.T) {
-	var pkg *TSGOV1.Package
-
-	pkg = commPkgs.GetExact("Owen3H-CSync")
+	pkg := commPkgs.GetExact("Owen3H-CSync")
 	if pkg == nil {
 		t.Fatal(errors.New("could not get package by its full name"))
 	}
