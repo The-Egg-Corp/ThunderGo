@@ -56,17 +56,17 @@ func Post(url string, contentType string, body any) (*[]byte, *int, error) {
 	return &resBody, &statusCode, nil
 }
 
-func JsonGetRequest[Expected interface{}](endpoint string) (*Expected, *int, error) {
+func JsonGetRequest[Expected any](endpoint string) (*Expected, *int, error) {
 	resBody, code, err := Get(DOMAIN+endpoint, "application/json")
 	return fromJSON[Expected](resBody), code, err
 }
 
-func JsonPostRequest[Expected interface{}, Body interface{}](endpoint string, body Body) (*Expected, *int, error) {
+func JsonPostRequest[Expected any, Body any](endpoint string, body Body) (*Expected, *int, error) {
 	resBody, code, err := Post(DOMAIN+endpoint, "application/json", body)
 	return fromJSON[Expected](resBody), code, err
 }
 
-func fromJSON[T interface{}](data *[]byte) *T {
+func fromJSON[T any](data *[]byte) *T {
 	if data == nil {
 		return nil
 	}

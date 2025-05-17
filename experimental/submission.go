@@ -53,7 +53,7 @@ type PackageSubmissionResult struct {
 //
 // An API key can be gathered via Settings -> Service Accounts. It is up to you to store and pass it safely.
 func SubmitPackage(authKey string, metadata PackageSubmissionMetadata) (*PackageSubmissionResult, error) {
-	res, _, err := util.JsonPostRequest[PackageSubmissionResult, PackageSubmissionMetadata](SUBMIT_ENDPOINT, metadata)
+	res, _, err := util.JsonPostRequest[PackageSubmissionResult](SUBMIT_ENDPOINT, metadata)
 	if err != nil {
 		return nil, errors.New("error sending submission:\n" + err.Error())
 	}
