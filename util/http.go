@@ -9,8 +9,8 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-const REQ_TIMEOUT = 10 * time.Second
 const DOMAIN = "https://thunderstore.io/"
+const REQ_TIMEOUT = 15 * time.Second
 
 //const AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0 (Edition std-1)"
 

@@ -12,7 +12,7 @@ import (
 )
 
 var comm = TSGOV1.Community{Identifier: "lethal-company"}
-var commPkgs TSGOV1.PackageList
+var commPkgs TSGOV1.PackageList // Cache for all community tests. Set once in setup()
 
 func TestMain(m *testing.M) {
 	err := setup()
@@ -34,6 +34,7 @@ func setup() error {
 		return errors.New("failed to get community packages. cannot use empty slice")
 	}
 
+	commPkgs = pkgs
 	return nil
 }
 
@@ -97,7 +98,13 @@ func TestMetrics(t *testing.T) {
 }
 
 func TestPackageDates(t *testing.T) {
-	pkg := commPkgs.Get("Owen3H", "CSync")
+	owner := "Owen3H"
+	pkgName := "CSync"
+
+	pkg := commPkgs.Get(owner, pkgName)
+	if pkg == nil {
+		t.Fatalf("error testing package dates. package %s-%s not found", owner, pkgName)
+	}
 
 	if pkg.DateCreated.IsZero() {
 		t.Error("DateCreated should be valid and not its zero value.")
@@ -117,9 +124,9 @@ func TestPackageFilter(t *testing.T) {
 }
 
 func TestDownloadVersion(t *testing.T) {
-	if os.Getenv("GITHUB_ACTIONS") == "true" {
-		t.Skip()
-	}
+	// if os.Getenv("GITHUB_ACTIONS") == "true" {
+	// 	t.Skip()
+	// }
 
 	pkg := comm.GetPackage("Owen3H", "CSync")
 	if pkg == nil {
@@ -130,7 +137,6 @@ func TestDownloadVersion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error downloading version:\n%v", err)
 	}
-
 }
 
 func TestPackageFromCommunity(t *testing.T) {

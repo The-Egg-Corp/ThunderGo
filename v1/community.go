@@ -24,21 +24,16 @@ func NewCommunityList(identifiers ...string) (list CommunityList) {
 func (comm Community) AllPackages(predicate ...func(item Package, index int) bool) (PackageList, error) {
 	endpoint := fmt.Sprint("c/", comm.Identifier, "/api/v1/package")
 
-	pkgs, _, err := util.JsonGetRequest[PackageList](endpoint)
+	pkgs, code, err := util.JsonGetRequest[PackageList](endpoint)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("[%s] could not get all packages. status code: %d\n%v", comm.Identifier, code, err)
 	}
 
-	//pkgCache = pkgs
 	return *pkgs, nil
 }
 
 // Gets a single package from this community given the owner and package name.
 func (comm Community) GetPackage(owner string, name string) *Package {
-	// if pkgCache != nil {
-	// 	return pkgCache.Get(author, name)
-	// }
-
 	pkgs, err := comm.AllPackages()
 	if err != nil {
 		return nil
